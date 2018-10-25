@@ -1,0 +1,115 @@
+"""
+Richard Messina
+rdm420 N13468622
+Computer Security
+Assignment 2.1
+
+This security layer handles parity for files in RepyV2.
+
+Note:
+    This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
+    Also you need to give it an application to run.
+    python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+"""
+
+
+class RepyParityError(Exception):
+    pass
+
+
+class EvenParityFile():
+    def __init__(self, filename, create):
+        # globals
+        mycontext['debug'] = False
+
+        # local (per object) reference to the underlying file
+        self.fn = filename
+
+        self.file = openfile(self.fn, create)
+
+    def _is_even_parity(self, bytesequence):
+        if len(bytesequence) < 8:
+            return True
+
+        ct = 0
+        for byte in bytesequence:
+            if ord(byte) % 2 == 0:
+                ct += 1
+        return ct % 2 == 0
+
+    def _is_input_data_valid(self, data, offset_mod):
+        if offset_mod == 0:
+            ebs_index = 0
+        else:
+            ebs_index = 8 - offset_mod
+        ebs = data[ebs_index:ebs_index + 8]
+        while len(ebs) >= 8:
+            if not self._is_even_parity(ebs):
+                return False
+            ebs_index += 8
+            ebs = data[ebs_index:ebs_index + 8]
+        return True
+
+    def _is_valid_write(self, data, offset):
+        offset_mod = offset % 8
+
+        # check the eight byte sequences of the input data which would completely overwrite
+        # the corresponding eight byte sequences of the file
+        if not self._is_input_data_valid(data, offset_mod):
+            return False
+
+        # check the eight byte sequence overlapped at the beginning of the offset
+        if offset_mod != 0:
+            start_of_first_ebs_in_file = offset - offset_mod
+            first_ebs_in_file = self.readat(offset_mod, start_of_first_ebs_in_file)
+            if not self._is_even_parity(first_ebs_in_file + data[:8 - offset_mod]):
+                return False
+
+        # check the eight byte sequence overlapped at the end of the input data
+        remaining_data = data[8 - offset_mod:]
+        last_ebs_in_input_data = remaining_data[len(remaining_data) - (len(remaining_data) % 8):]
+        start_of_last_ebs_in_file = offset + len(data)
+        if start_of_last_ebs_in_file % 8 != 0:
+            try:
+                last_ebs_in_file = self.readat(
+                    8 - len(last_ebs_in_input_data), start_of_last_ebs_in_file)
+            except SeekPastEndOfFileError:
+                return True
+            if not self._is_even_parity(last_ebs_in_input_data + last_ebs_in_file):
+                return False
+
+        return True
+
+    def writeat(self, data, offset):
+        if self._is_valid_write(data, offset):
+            self.file.writeat(data, offset)
+        else:
+            raise RepyParityError("Write would cause non-even parity")
+
+    def readat(self, bytes, offset):
+        # Read from the file using the sandbox's readat...
+        return self.file.readat(bytes, offset)
+
+    def close(self):
+        self.file.close()
+
+
+def parityopenfile(filename, create):
+    return EvenParityFile(filename, create)
+
+
+# The code here sets up type checking and variable hiding for you.  You
+# should not need to change anything below here.
+sec_file_def = {"obj-type": EvenParityFile,
+                "name": "EvenParityFile",
+                "writeat": {"type": "func", "args": (str, (int, long)), "exceptions": Exception, "return": (int, type(None)), "target": EvenParityFile.writeat},
+                "readat": {"type": "func", "args": ((int, long, type(None)), (int, long)), "exceptions": Exception, "return": str, "target": EvenParityFile.readat},
+                "close": {"type": "func", "args": None, "exceptions": None, "return": (bool, type(None)), "target": EvenParityFile.close}
+                }
+
+CHILD_CONTEXT_DEF["openfile"] = {"type": "objc", "args": (
+    str, bool), "exceptions": Exception, "return": sec_file_def, "target": parityopenfile}
+CHILD_CONTEXT_DEF["RepyParityError"] = {"type": "any", "target": RepyParityError}
+
+# Execute the user code
+secure_dispatch_module()

@@ -1,0 +1,37 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+writedata = 'BBBBAAAA'
+overwritedata = 'BB'
+wrongdata = 'BBBBBAAA'
+error = False
+security = False
+
+try:
+  myfile.writeat(writedata, 0)
+  myfile.writeat(overwritedata, 3)
+except RepyParityError:
+  pass
+except RepyException as e :
+  error = True
+else :
+  error = True
+
+if (not error or not security) and "testfile.txt" in listfiles():
+  try :
+    if myfile.readat(None, 0) == wrongdata :
+      error = True
+      security = True
+  except RepyException :
+    error = True
+elif not error and "testfile.txt" not in listfiles():
+  error = True
+
+if error and not security :
+  log("Accuracy Error\n")
+elif error and security :
+  log("Security Error\n")
+
+#Close the file
+# myfile.close()

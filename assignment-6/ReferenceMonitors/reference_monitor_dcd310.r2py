@@ -2,13 +2,13 @@
 This security layer inadequately handles parity for files in RepyV2.
 
 
+
 Note:
     This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
     Also you need to give it an application to run.
     python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py 
     
     """ 
-
 class RepyParityError(Exception):
     pass
 
@@ -18,44 +18,60 @@ class EvenParityFile():
     mycontext['debug'] = False   
     # local (per object) reference to the underlying file
     self.fn = filename
- 
     self.file = openfile(self.fn,create)
 
 
   def writeat(self,data,offset):
-    # assumptions (based on RePy API docs)
-    # : writeat does NOT allow for writes to occur past the end of the file
-    # : data is a string
-
+    # check the parity of the data written
+    # NOTE: This is wrong in many ways!!!!
+    newOffset = offset
     thisdata = data
-    frontGroup = ""
-    backGroup = ""
-    frontLen = 8
-    backLen = 8
+    if len(thisdata) > 8:
+      end = 8
+      while len(thisdata) != 0:
+        eightbytesequence = thisdata[:end]
+        thisdata = thisdata[end:]
+        end += len(eightbytesequence)
+        even = True
+        log(eightbytesequence + " ")
+        if len(eightbytesequence) < 8:
+          for thisbyte in eightbytesequence:
+            even = not even
+          if even:
+            self.file.writeat(eightbytesequence,newOffset)
+            newOffset+=len(eightbytesequence)
+        # ...or error out.
+          else:
+            raise RepyParityError("Non-even parity write to file")
 
-    if offset % 8 != 0 :
-      frontLen = (offset % 8)
-      frontOffset = offset - frontLen
-      frontGroup = self.readat(frontLen, frontOffset) + thisdata[:(8 - frontLen)]
-
-    if not self.checkParity(frontGroup) :
-      raise RepyParityError("Non-even parity write to file")
-
-    if (offset + len(thisdata)) % 8 != 0 :
-      backLen = 8 - ((offset + len(thisdata)) % 8)
-      backOffset = offset + len(thisdata)
-      backGroup = self.readat(backLen, backOffset) + thisdata[-(8 - backLen): ]
-
-    if not self.checkParity(backGroup) :
-      raise RepyParityError("Non-even parity write to file")
-
-    thisdata = thisdata[(8 - frontLen) : -(8 - backLen)]
-
-    if not self.checkParity(thisdata) :
-      raise RepyParityError("Non-even parity write to file")
+        for thisbyte in eightbytesequence:
+          # for each byte, if it is odd, flip even to be the opposite
+          if ord(thisbyte) % 2:
+            even = not even
+        # actually call write, if we are supposed to...
+        if even:
+          self.file.writeat(eightbytesequence,newOffset)
+          newOffset+=len(eightbytesequence)
+        # ...or error out.
+        else:
+          raise RepyParityError("Non-even parity write to file")
+    else:
+      while thisdata:
+        eightbytesequence = thisdata[:len(thisdata)]
+        thisdata = thisdata[len(thisdata):]
+        even = True
+        for thisbyte in eightbytesequence:
+          # for each byte, if it is odd, flip even to be the opposite
+          if ord(thisbyte) % 2:
+            even = not even
+            
+        # actually call write, if we are supposed to...
+        if even:
+          self.file.writeat(eightbytesequence,newOffset)
+        # ...or error out.
+        else:
+          raise RepyParityError("Non-even parity write to file")
     
-    #go ahead and write the file if everything checksout
-    self.file.writeat(data,offset)  
   
   def readat(self,bytes,offset):
     # Read from the file using the sandbox's readat...
@@ -64,19 +80,6 @@ class EvenParityFile():
   def close(self):
     self.file.close()
 
-  def checkParity(self, string) :
-    even = True
-    while string:
-      eightbytesequence = string[:8]
-      string = string[8:]
-      even = True
-      for thisbyte in eightbytesequence:
-        # for each byte, if it is odd, flip even to be the opposite
-        if ord(thisbyte) % 2:
-          even = not even
-      if not even :
-        break
-    return even
 
 def parityopenfile(filename, create):
   return EvenParityFile(filename,create)

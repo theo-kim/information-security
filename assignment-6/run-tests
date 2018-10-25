@@ -1,0 +1,42 @@
+#!/bin/bash
+BREAKS=0
+
+for referencemonitor in ../assignment-5/runnable/reference_*;
+	do rm $referencemonitor;
+	done;
+
+for testcase in ../assignment-5/runnable/tk1931_*.r2py;
+	do rm $testcase;
+	done;
+
+for referencemonitor in ReferenceMonitors/reference_*;
+	do cp $referencemonitor ../assignment-5/runnable;
+	done;
+
+for testcase in TestCases/tk1931_*.r2py;
+	do cp $testcase ../assignment-5/runnable;
+	done;
+
+cd ../assignment-5/runnable;
+
+for referencemonitor in reference_*; do 
+	# echo $referencemonitor
+	for testcase in tk1931_*.r2py; do 
+		out=$(python2.7 repy.py restrictions.default encasementlib.r2py $referencemonitor $testcase 2>&1);
+		if [[ $out == "Security Error" ]]; then echo "Security: $referencemonitor / $testcase"; break;
+		elif [[ $out == "Accuracy Error" ]]; then echo "Accuracy: $referencemonitor / $testcase"; break;
+		# elif [[ $out ]]; then echo "Other: $referencemonitor / $testcase"
+		fi;
+		done;
+	done;
+
+for referencemonitor in reference_*;
+	do rm $referencemonitor;
+	done;
+
+for testcase in tk1931_*.r2py;
+	do rm $testcase;
+	done;
+
+
+

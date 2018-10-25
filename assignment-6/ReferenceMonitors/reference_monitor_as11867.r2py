@@ -1,0 +1,77 @@
+"""
+This security layer inadequately handles parity for files in RepyV2.
+
+Note:
+    This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
+    Also you need to give it an application to run.
+    python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py 
+    
+    """ 
+class RepyParityError(Exception):
+    pass
+
+class EvenParityFile():
+  def __init__(self,filename,create):
+    # globals
+    mycontext['debug'] = False   
+    # local (per object) reference to the underlying file
+    self.fn = filename
+ 
+    self.file = openfile(self.fn,create)
+
+
+  def writeat(self,data,offset):
+
+    thisdata = data
+    # data is stored in an array where each element is of 8 Bytes length.
+    thisdata = [thisdata[i:i+8] for i in range(0, len(thisdata), 8)]
+
+    # Initialising an Array for holding true_false value of each sequence.
+    t_f_Array = []
+
+    for sequence in thisdata:
+        # If the sequence is not of length 8, it is skipped.
+        if len(sequence) != 8:
+          continue
+
+        even = True
+        for thisbyte in sequence:
+          # for each byte, if it is odd, flip even to be the opposite
+          if ord(thisbyte) % 2:
+            even = not even
+        t_f_Array.append(even)
+    # If a not-even is in the array, the entire string is not written,
+    # thus producing an error.  
+
+    if False in t_f_Array:
+        raise RepyParityError("Non-even parity write to file")
+    # Otherwise, perform write for all Even cases.    
+    elif True in t_f_Array:
+        self.file.writeat(data,offset)
+
+        
+  def readat(self,bytes,offset):
+    # Read from the file using the sandbox's readat...
+    return self.file.readat(bytes,offset)
+
+  def close(self):
+    self.file.close()
+
+
+def parityopenfile(filename, create):
+  return EvenParityFile(filename,create)
+
+
+# The code here sets up type checking and variable hiding for you.  You
+# should not need to change anything below here.
+sec_file_def = {"obj-type":EvenParityFile,
+                "name":"EvenParityFile",
+                "writeat":{"type":"func","args":(str,(int,long)),"exceptions":Exception,"return":(int,type(None)),"target":EvenParityFile.writeat},
+                "readat":{"type":"func","args":((int,long,type(None)),(int,long)),"exceptions":Exception,"return":str,"target":EvenParityFile.readat},
+                "close":{"type":"func","args":None,"exceptions":None,"return":(bool,type(None)),"target":EvenParityFile.close}
+           }
+
+CHILD_CONTEXT_DEF["openfile"] = {"type":"objc","args":(str,bool),"exceptions":Exception,"return":sec_file_def,"target":parityopenfile}
+CHILD_CONTEXT_DEF["RepyParityError"] = {"type":"any","target":RepyParityError}
+# Execute the user code
+secure_dispatch_module()

@@ -3,21 +3,12 @@ if "testfile.txt" in listfiles():
 
 myfile=openfile("testfile.txt",True)  #Create a parity file
 
-teststring = 'BBAAAAAA';
-
-# put some valid data in the file.
-myfile.writeat(teststring,0)
-
-# I should be able to read it out.
-assert(teststring == myfile.readat(None,0))
-
-# However, this write should fail...
 try:
-  myfile.writeat(('BB'), 0)
+  myfile.writeat('BBB', 0)
 except RepyParityError:
-  log("error...\n")
+  log("Good")
 else:
-  log("should have been an error instead!")
+  log("Security Error")
   
 #Close the file
 myfile.close()

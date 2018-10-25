@@ -1,0 +1,131 @@
+"""
+This security layer inadequately handles parity for files in RepyV2.
+
+
+
+Note:
+    This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
+    Also you need to give it an application to run.
+    python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py 
+    
+    """ 
+class RepyParityError(Exception):
+    pass
+
+class OutOfIndexError(Exception):
+    pass
+
+class EvenParityFile():
+  def __init__(self,filename,create):
+    # globals 
+    # I think it works well
+    mycontext['debug'] = True   
+    # local (per object) reference to the underlying file
+    self.fn = filename
+ 
+    self.file = openfile(self.fn,create)
+    # file size 
+    self.size = 0
+
+
+  def writeat(self,data,offset):
+   
+    # check the parity of the data written
+    # NOTE: This is wrong in many ways!!!!
+    # not now
+    if not (isinstance(data,str) and isinstance(offset,int)):
+      return None
+    if offset<0:
+      return None
+    flag = True # determine the writeat() legal or not
+    datacopy = data # copy for operate
+    length = len(data) # datalength for all kinds of tests
+    currentoffset = offset # the current checking offset
+    initialbytes = offset%8 # test if the writeat start within any 8B-sequence
+    checkset =initialbytes #:D
+    checktime = (length)/8 # if start at 8*k byte (0,8,16....) complete checktime for seq in data, modified in following case
+    if not (offset%8 == 0): # initial check for incomplete bytes from data and original file 
+      if currentoffset/8==(currentoffset + length)/8: # test if the write stop within the same byte
+        datacopy = self.file.readat(checkset,currentoffset-checkset)+datacopy
+        currentoffset -= checkset
+      else:  
+        checktime = (length - 8 + checkset)/8 # checktime for start at none 8*k
+        previous = self.file.readat(checkset,currentoffset-checkset) # the orther bytes (checkset bytes) to check from original file
+        currentbytes = datacopy[:8-checkset] # the bytes from data to check ((8 - checkset) bytes)
+        datacopy = datacopy[8-checkset:] #
+        bytestocheck = previous + currentbytes # obviously
+        #if not len(bytestocheck)==8:
+         # log("error")
+        if not self.check(bytestocheck): # check
+          raise RepyParityError("Non-even parity write to file")
+          flag = False
+        currentoffset = currentoffset + 8 - checkset # set the currentoffset to next bytes to check
+    for i in range(0,checktime): # complete 8B-sequence to check easy and fast
+      currentoffset += 8 # currentoffset moves forward
+      bytestocheck = datacopy[:8] # read and modify from data
+      datacopy = datacopy[8:]
+      if not self.check(bytestocheck): #check 
+        raise RepyParityError("Non-even parity write to file")
+        flag = False
+    if datacopy: # check if there are tail data less than 8 bytes
+      lastlen = len(datacopy)
+      if self.size>=currentoffset + 8: # check if the file has a complete 8B-seq to check 
+        lastbytes = self.file.readat(8-lastlen,currentoffset+lastlen)
+        lbtc = datacopy + lastbytes
+        #if not len(lbtc)==8:
+         # log("error")
+        if not self.check(lbtc):
+          raise RepyParityError("Non-even parity write to file")
+          flag = False
+    if flag:
+      try:
+        self.file.writeat(data,offset)
+        if length + offset > self.size:
+          self.size = length + offset
+      except SeekPastEndOfFileError, RepyArgumentError:
+        pass
+    else:
+      pass
+  
+  def readat(self,bytes,offset):
+    # Read from the file using the sandbox's readat...
+    if (isinstance(bytes, int) or bytes==None) and (isinstance(offset, int)):
+      if offset<0:
+        return ""  
+      try:
+        out = self.file.readat(bytes,offset)
+        return out
+      except SeekPastEndOfFileError,RepyArgumentError:      
+        return "" 
+      
+
+  def close(self):
+    self.file.close()
+  
+  def check(self,bytes):
+    flag = True
+    for currentbyte in bytes:
+      if not (ord(currentbyte) % 2):
+        flag = not flag
+    return flag
+  
+
+def parityopenfile(filename, create):
+  return EvenParityFile(filename,create)
+
+
+
+
+# The code here sets up type checking and variable hiding for you.  You
+# should not need to change anything below here.
+sec_file_def = {"obj-type":EvenParityFile,
+                "name":"EvenParityFile",
+                "writeat":{"type":"func","args":(str,(int,long)),"exceptions":Exception,"return":(int,type(None)),"target":EvenParityFile.writeat},
+                "readat":{"type":"func","args":((int,long,type(None)),(int,long)),"exceptions":Exception,"return":str,"target":EvenParityFile.readat},
+                "close":{"type":"func","args":None,"exceptions":None,"return":(bool,type(None)),"target":EvenParityFile.close}
+           }
+
+CHILD_CONTEXT_DEF["openfile"] = {"type":"objc","args":(str,bool),"exceptions":Exception,"return":sec_file_def,"target":parityopenfile}
+CHILD_CONTEXT_DEF["RepyParityError"] = {"type":"any","target":RepyParityError}
+# Execute the user code
+secure_dispatch_module()

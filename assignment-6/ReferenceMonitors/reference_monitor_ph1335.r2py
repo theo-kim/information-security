@@ -1,0 +1,97 @@
+"""
+This security layer inadequately handles parity for files in RepyV2.
+
+Note:
+    This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
+    Also you need to give it an application to run.
+    python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py 
+    
+    """ 
+class RepyParityError(Exception):
+    pass
+
+class EvenParityFile():
+  def __init__(self,filename,create):
+    # globals
+    mycontext['debug'] = False 
+    mycontext['counter'] = 0 
+    mycontext['sentinel'] = 0
+
+    # local (per object) reference to the underlying file
+    self.fn = filename
+    self.file = openfile(self.fn,create)
+
+
+  def writeat(self,data,offset):
+    # check the parity of the data written
+
+    thisdata = data
+    counter = mycontext['counter']
+    sentinel = mycontext['sentinel']
+    # sequence = thisdata[:8]
+    # thisdata = thisdata[8:]
+
+    if offset < sentinel:
+      sentinel = 0
+      counter = 0
+      
+      tempCopy = self.file.readat(None, 0)[:offset]
+      tempCopy += data
+      tempCopy += self.file.readat(None, offset+len(data))
+      offset = 0
+
+      #log(tempCopy)
+
+
+      # log("off sentinel" + str(sentinel) + "off counter" + str(counter))
+      # log(tempCopy)
+      thisdata = tempCopy
+
+    while thisdata:
+      sequence = thisdata[:8]
+      thisdata = thisdata[8:]        
+      #log(sequence + "\n")
+
+      for byte in sequence:
+        sentinel += 1
+
+        if ord(byte) % 2:
+          counter += 1
+
+        if sentinel % 8 == 0:
+          if counter % 2:
+            # log("error raised\n")
+            # log("sentinel:" + str(sentinel) + " counter:" + str(counter) + "\n")
+            raise RepyParityError("Non-even parity write to file")
+
+          else:
+            # mycontext['sentinel'] = sentinel
+            counter = 0
+
+        # log("sentinel:" + str(sentinel) + " counter:" + str(counter) + "\n")
+
+      # actually call write, if we are supposed to...
+        self.file.writeat(sequence, offset)
+        mycontext['counter'] = counter
+        mycontext['sentinel'] = sentinel
+
+
+
+
+        
+
+
+        # else:
+        #   offset += len(eightbytesequence)
+  
+  
+  def readat(self,bytes,offset):
+    # Read from the file using the sandbox's readat...
+    return self.file.readat(bytes,offset)
+
+  def close(self):
+    self.file.close()
+
+
+def parityopenfile(filename, create):
+  return EvenParityFile(filename,create)

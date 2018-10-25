@@ -1,0 +1,170 @@
+"""
+This security layer inadequately handles parity for files in RepyV2.
+
+
+
+Note:
+    This security layer uses encasementlib.r2py, restrictions.default, repy.py and Python
+    Also you need to give it an application to run.
+    python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py 
+    
+    """ 
+class RepyParityError(Exception):
+    pass
+
+class EvenParityFile():
+  def __init__(self,filename,create):
+    # globals
+    mycontext['debug'] = False   
+    # local (per object) reference to the underlying file
+    self.fn = filename
+    self.index = 0
+    self.file = openfile(self.fn,create)
+
+
+  def writeat(self,data,offset):
+   
+    contents = self.readat(None, self.index)
+    #log('content length = ',len(contents)-1, '\n')
+    #log('working content = ',contents[1:]+'\n')
+
+    ## WHEN FILE IS INITIALLY EMPTY ---------------------------
+    if len(contents) == 0 and self.index == 0 and offset == 0:
+
+        if len(data) < 8:
+            #log('called\n')
+            self.file.writeat(data,offset)
+        
+        else:
+            thisdata = data
+            cum = ''
+            flag = 0
+            while thisdata:
+                seq = thisdata[:8]
+                thisdata = thisdata[8:]
+                even = True
+                for byte in seq:
+                    if ord(byte) % 2:
+                        even = not even
+
+                if even:
+                    cum = cum + seq
+                else:
+                    flag = 1
+                    raise RepyParityError("Non-even parity write to file")
+
+            if flag == 0:
+                self.file.writeat(cum, offset)
+                q = len(cum)/8
+                self.index = self.index + (q*8) -1
+        #log('\nindex = ', self.index, '\n\n')
+
+    ## SUBSEQUENT WRITES TO THE FILE (when offset>index)----------------
+    if len(contents) != 0 and offset > self.index:
+        start_index = self.index + 1 # or we can simple use offset 
+        extra = contents[1:]
+        adjust = offset - self.index - 1
+        extra = extra[:adjust]
+        #log('\nextra from prev writes = ',extra, '\n')
+        newData = extra+data # now we check the parity of newData 
+        #log('new data = ',newData, ' ; length = ', len(newData))
+
+        if len(newData) < 8:
+            #log('called later\n')
+            self.file.writeat(newData,offset)
+        else:   
+            flag2 = 0
+            cum2 = ''
+            while newData:
+                seq = newData[:8]
+                newData = newData[8:]
+                even = True
+                for byte in seq:
+                    if ord(byte) % 2:
+                        even = not even
+
+                if even:
+                    cum2 = cum2 + seq
+                else:
+                    flag2 = 1
+                    raise RepyParityError("Non-even parity write to file")
+            if flag2 == 0:
+                self.file.writeat(data, offset)
+                q = len(cum2)/8
+                self.index = start_index + (q*8) -1
+        #log('\nlater index = ', self.index, '\n\n')
+
+    ## SUBSEQUENT WRITES TO THE FILE (when offset <= index )
+    if offset <= self.index and len(contents) > 0:
+        start = offset
+        data_len = len(data)
+        end = start + data_len - 1
+        q = end/8
+        bytes_upto = ((q+1)*8)-1
+        if offset == 7:
+            bytes_from = 0
+        else:
+            p = offset/8
+            bytes_from = (p*8) + 1
+        #log('\nbytes from = ', bytes_from,'\n')
+        #log('\nbytes upto = ', bytes_upto,'\n')
+        new_contents = self.readat(bytes_upto+1, bytes_from)
+        #log('\nrecheck blob = ',new_contents,'length = ',len(new_contents),'\n') #works
+        new_contents = list(new_contents) # string to array
+        new_seq = ''
+        x = start
+        for byte in data:
+            new_contents[x-bytes_from] = byte
+            x = x +1
+        new_contents = ''.join(new_contents) ## back to string
+        #log('check this now = ', new_contents, '\n')
+
+        flag3 = 0
+        cum4 = ''
+        while new_contents:
+            seq3 = new_contents[:8]
+            new_contents = new_contents[8:]
+            even3 = True
+            for byte in seq3:
+                if ord(byte) % 2:
+                    even3 = not even3
+
+            if even3:
+                cum4 = cum4 + seq3
+            else:
+                flag3 = 1
+                raise RepyParityError("Non-even parity write to file")
+        if flag3 == 0:
+            self.file.writeat(data, offset)
+            if(end > self.index):
+                q = len(cum2)/8
+                self.index = start_index + (q*8) -1
+        #log('\nlater index = ', self.index, '\n\n')
+        
+  def readat(self,bytes,offset):
+    # Read from the file using the sandbox's readat...
+    return self.file.readat(bytes,offset)
+
+  def close(self):
+    self.file.close()
+
+
+def parityopenfile(filename, create):
+  return EvenParityFile(filename,create)
+
+
+
+
+# The code here sets up type checking and variable hiding for you.  You
+# should not need to change anything below here.
+sec_file_def = {"obj-type":EvenParityFile,
+                "name":"EvenParityFile",
+                "writeat":{"type":"func","args":(str,(int,long)),"exceptions":Exception,"return":(int,type(None)),"target":EvenParityFile.writeat},
+                "readat":{"type":"func","args":((int,long,type(None)),(int,long)),"exceptions":Exception,"return":str,"target":EvenParityFile.readat},
+                "close":{"type":"func","args":None,"exceptions":None,"return":(bool,type(None)),"target":EvenParityFile.close}
+           }
+
+CHILD_CONTEXT_DEF["openfile"] = {"type":"objc","args":(str,bool),"exceptions":Exception,"return":sec_file_def,"target":parityopenfile}
+CHILD_CONTEXT_DEF["RepyParityError"] = {"type":"any","target":RepyParityError}
+# Execute the user code
+secure_dispatch_module()
