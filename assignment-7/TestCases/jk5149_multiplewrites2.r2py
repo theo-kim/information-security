@@ -1,0 +1,19 @@
+#trying to see if rewriting the wrong input eventually breaks the system
+
+if "inaccuratemultiple.txt" in listfiles():
+ removefile("inaccuratemultiple.txt")
+
+myfile=openfile("inaccuratemultiple.txt",True)  
+
+try:
+ myfile.writeat("BCCB",2)
+ myfile.writeat("BCCB",2)
+ myfile.writeat("BCCB",2)
+ myfile.writeat("BCCB",2)
+ myfile.writeat("BCCB",2)
+except RepyParityError:
+ myfile.close()
+ pass
+else:
+ myfile.close()
+ log("Invalid input accepted")

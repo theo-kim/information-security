@@ -1,0 +1,26 @@
+# Valid WRITE on a non-empty file
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  try:
+    myfile.writeat("A",0)
+  except RepyParityError:
+    log("  false RepyParityError")
+except:
+  log("  illegal Error")
+# Read the file to check the contents
+try:
+  assert('A' == myfile.readat(1,0))
+  myfile.close()
+except:
+  myfile.close()
+  log("  Valid Data write to a file is unsuccessfull!1\n")
+
+
+
+#FOR %r IN (reference_monitor_*) DO @(ECHO %r under test & FOR %a IN (jc_8773_6*) DO @python2 repy.py restrictions.default encasementlib.r2py %r %a)

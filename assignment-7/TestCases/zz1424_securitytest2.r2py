@@ -1,0 +1,23 @@
+#zz1424 / N12323212
+#TEST CASE 2
+
+#ACCURACY/EFFICIENCY/SECURITY
+#This test case writes an invalid 8 byte sequence.
+
+def main():
+    #Remove and create testfile
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+
+    try:
+        myfile.writeat("ABABABAA", 0)
+        assert("ABABABAA" == myfile.readat(8, 0)) #odd parity
+        myfile.close()
+    except:
+        myfile.close()
+    else:
+        log("2: Invalid write to file successful!\n")
+
+if callfunc == "initialize":
+    main()

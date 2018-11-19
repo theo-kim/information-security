@@ -1,0 +1,28 @@
+import time
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+ta1 = time.time.now()
+
+testfile.writeat("AAAAAA",0)
+
+ta2 = time.time.now()
+
+tb1 = time.time.now()
+
+testfile.writeat("BCBCBC",6)
+
+tb2 = time.time.now()
+
+if ((ta2-ta1)>=(tb1-tb1)):
+  myfile.close()
+  log("Program is inefficent")
+
+# I should be able to read it out.
+# However, this write should fail...
+
+

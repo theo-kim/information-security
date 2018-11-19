@@ -1,0 +1,21 @@
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("BCBCBCBCBBBBCCCCBBCCBBCC",0)
+myfile.writeat("xx",13)
+
+# Read the file to check the contents
+try:
+  #BCBCBCBCBBBBCCxxCCBBCCBBCC
+  assert('CBBCCBBCC' == myfile.readat(17,0))
+  #Close the file
+  myfile.close()
+  log("efficient?")
+except:
+  #Close the file
+  myfile.close()
+  log("Valid Data write to a file is unsuccessfull!")

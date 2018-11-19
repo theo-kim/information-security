@@ -1,0 +1,20 @@
+# write two short valid sub-blocks
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBB", 0)
+    assert("BBBBB" == target.readat(5, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("BBB", 5)
+    assert("BBBBBBBB" == target.readat(8, 0))
+except RepyParityError:
+    log("Valid data not written!")
+
+target.close()

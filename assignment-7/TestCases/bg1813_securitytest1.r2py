@@ -1,0 +1,19 @@
+#bg1813 attack 1, try to write with negative off-set
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+	myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+ # write invalid data onto the file and bad offset.
+	myfile.writeat("kkkeeee",-8)
+
+ # Close the file:
+	myfile.close()
+	
+ # log if i was able to write to the file
+	log("Was able to write invalid data with negative off-set)
+	

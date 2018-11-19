@@ -1,0 +1,26 @@
+if "testfile.txt" in listfiles():
+  	removefile("testfile.txt")
+
+if "testfile.txt" in listfiles():
+  	removefile("testfile_1.txt")
+
+if "testfile.txt" in listfiles():
+  	removefile("testfile_2.txt")
+
+def writeMyFile1():
+	myfile=openfile("testfile.txt",True)  #Create a file
+	myfile.writeat("0AAAAAA0",0)
+	myfile.close()
+
+	myfile_1=openfile("testfile_1.txt",True)  #Create a file
+	myfile_1.writeat("1AAAAAA1",0)
+	myfile_1.close()
+
+
+def writeMyFile2():
+	myfile_2=openfile("testfile_2.txt",True)  #Create a file
+	myfile_2.writeat("2AAAAAA2",0)
+	myfile_2.close()
+
+createthread(writeMyFile1)
+createthread(writeMyFile2)

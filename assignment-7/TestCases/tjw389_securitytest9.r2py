@@ -1,0 +1,26 @@
+# python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+
+# TEST CASE 9 : Reading More Than EOF. "FOOD" is 4 bytes, I'm reading 9.
+# SUCCESSFUL WITH MOST CASES.
+# Travis Wheelwright - tjw389
+
+# Clean up of existing files
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+    
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Creates a file
+
+try:
+    myfile.writeat("FOOD",0)
+    myfile.readat(9,0)
+
+    # Close the file:
+    myfile.close()
+
+    log("ATTACK SUCCESSFUL!\n")
+
+except:
+    myfile.close()
+    # Error Handle or Failure Condition
+    # log("DATA NOT READ\n")

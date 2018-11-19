@@ -1,0 +1,7 @@
+try:
+	myfile=openfile("TESTFILE.txt",True)  #Create a parity file
+except RepyParityError:
+	#should happen
+	pass
+except:
+	log("failed file with uppercase characters testcase\n")

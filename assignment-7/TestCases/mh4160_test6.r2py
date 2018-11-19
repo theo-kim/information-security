@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Read the file to check the contents
+try:
+  myfile.writeat("BBBBBBBB",0)
+  myfile.writeat("DDDDDDD",4)
+  assert('BBBBDDDDDDD' == myfile.readat(None,0))
+  myfile.close()
+except:
+  myfile.close()
+  log("Invalid")

@@ -1,0 +1,21 @@
+# checks only new data without affected blocks
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("A", 0)
+    assert("A" == target.readat(1, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("BBBBBBBBBBBBBBBB", 1)
+    if target.readat(17, 0) == "ABBBBBBBBBBBBBBBB":
+        log("Invalid data written!")
+except RepyParityError:
+    pass
+
+target.close()

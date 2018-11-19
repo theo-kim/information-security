@@ -1,0 +1,21 @@
+# Write invalid nonaligned sequence to non-empty file
+# Should be rejected
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+myfile.writeat("AAAAAAAABBB",0)
+
+try:
+  # Write at offset 7 modifies two 8-byte sequences
+  # In this case, the even parity is broken
+  myfile.writeat("BA",7)
+except RepyParityError:
+  pass
+else:
+  log("Invalid write should have raised RepyParityError!\n")
+
+myfile.close()

@@ -1,0 +1,27 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+def th_timer():
+    sleep(5)
+    log('timeout')
+    exitall()
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("A"*8+"A"*5+'B',0)
+ # read from the file to see if the write was successful.
+ assert("A"*8+"A"*5+'B'== myfile.readat(None,0))
+ # Close the file:
+ myfile.close()
+except:
+ myfile.close()
+ # Error Handle or Failure Condition
+ log("Valid data not written!")
+exitall()

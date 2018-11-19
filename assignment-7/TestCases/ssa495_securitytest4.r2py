@@ -1,0 +1,16 @@
+# Invalid data write
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+myfile.writeat("AAACB",0)
+myfile.writeat("BCBB",4)
+try:
+  assert('AAACBCBB' == myfile.readat(8,0))
+except:
+  pass
+  myfile.close()
+else:
+  myfile.close()
+  log("Invalid data written to the existing file")

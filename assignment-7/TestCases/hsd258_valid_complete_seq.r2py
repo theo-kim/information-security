@@ -1,0 +1,16 @@
+# Write valid complete sequence to empty file
+# Should be allowed
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  # Even 8-byte sequence should be allowed
+  myfile.writeat("AAAAAAAA",0)
+  assert('AAAAAAAA' == myfile.readat(8,0))
+except:
+  log("Valid data not written!\n")
+
+myfile.close()

@@ -1,0 +1,21 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# write valid data onto the file.
+myfile.writeat("abcde",0)
+
+try:
+ # read from the file to see if the write was successful.
+ assert('abcde' == myfile.readat(5,0))
+ # Close the file:
+ myfile.close()
+except:
+ myfile.close()
+ # Error Handle or Failure Condition
+ log("accuracy_small_test\n")

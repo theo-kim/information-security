@@ -1,0 +1,27 @@
+# Test case security 1
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+#Open file function call
+myfile=openfile("testfile.txt",True)
+
+
+for i in range(7):
+    myfile.writeat("A",i)
+try:
+    myfile.writeat("B",7)
+except RepyParityError:
+    pass
+else:
+    log("Security bug")
+
+
+myfile.writeat("CCCCCCCCC",7)
+try:
+    myfile.writeat("AB",7)
+except RepyParityError:
+    myfile.close()
+else:
+    myfile.close()
+    log("Security bug")

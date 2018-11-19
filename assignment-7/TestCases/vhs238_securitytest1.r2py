@@ -1,0 +1,20 @@
+# Write Operation
+
+# Delete any existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open new file
+myfile=openfile("testfile.txt",True)  #Create parity file
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("ABBA",0)
+ # read from the file to see if the write was successful.
+ assert('ABBA' == myfile.readat(4,0))
+ # Close the file:
+ myfile.close()
+except:
+ myfile.close()
+ # Error Handle or Failure Condition
+ log("Valid data not written!")

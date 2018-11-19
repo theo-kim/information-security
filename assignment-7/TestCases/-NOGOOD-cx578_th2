@@ -1,0 +1,56 @@
+mycontext['th1'] = False
+mycontext['th2'] = False
+def createfile(filename):
+    if filename in listfiles():
+        removefile(filename)
+    myfile = openfile(filename,True)
+    return myfile
+
+def th1():
+    for i in range(10000):
+        try:
+            offset = len(myfile.readat(None,0))
+            myfile.writeat('A',offset)
+        except Exception:
+#            log('th1 exception')
+            continue
+    mycontext['th1']=True
+        
+
+def th2():
+    for i in range(10000):
+        try:
+            offset = len(myfile.readat(None,0))
+            myfile.writeat('B',offset)
+        except Exception:
+#            log('th2 exception')
+            continue
+    mycontext['th2']=True
+
+myfile = createfile('testfile.txt')
+def th3():
+    while(1):
+        content = myfile.readat(None,0)
+#        log(content)
+        i = 0
+        while(1):
+            try:
+                thisbyte = content[i:i+8]
+                if len(thisbyte) == 8:
+                    if sum([ord(j) for j in thisbyte])%2 == 1:
+                        log(thisbyte)
+                        exitall()
+                        break
+                i +=8
+                if thisbyte=='':
+                    break
+            except:
+                break
+    if mycontext['th1']==True or mycontext['th1']==True:
+        exitall()
+
+createthread(th1)
+createthread(th2)
+createthread(th3)
+#myfile.close()
+#exitall()

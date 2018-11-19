@@ -1,0 +1,16 @@
+# Basic write test
+# Student: mm7277
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)  #Open a file
+
+# Write data on the file
+try:
+	myfile.writeat("testing123",0)
+except:
+	# Error Handle or Failure Condition
+	log("Security bug")
+#Close the file
+myfile.close()

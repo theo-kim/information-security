@@ -1,0 +1,79 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+long_input = ''
+for i in range(10000):
+ long_input += 'AAAAAAAA'
+# log(len(long_input))
+
+def sleep_then_call(pause_in_seconds, call_function, call_args):
+ # This function returns a function that takes no arguments. Yet
+ # the returned function "remembers" (via a closure) the variables
+ # defined in the outside scope.
+ # This construction is required as we cannot pass arguments to
+ # the function that we supply to createthread.
+ def configured_timer_function():
+  sleep(pause_in_seconds)
+  call_function(*call_args)
+ return configured_timer_function
+
+def killprogram():
+ log('time exceeded limit')
+ exitall()
+# def close_after(t):
+#  def sleep_for():
+#   # after sleeping t sec, close the server
+#   sleep(t)
+#   log('time exceeded limit')
+#   exitall()
+#  return sleep_for
+
+createthread(sleep_then_call(5, killprogram, ''))
+
+myfile.writeat(long_input, 0)
+
+def writeLongStr():
+ myfile.writeat(long_input, 5)
+
+def writeShortStr():
+ myfile.writeat("BB", 0)
+
+createthread(writeLongStr)
+createthread(writeShortStr)
+
+
+def check():
+ try:
+  assert('BBAAAAAA' == myfile.readat(8,0))
+  #Close the file
+  myfile.close()
+  exitall()
+ except:
+  #Close the file
+  myfile.close()
+  log("Valid Data write to a file is unsuccessful!")
+  exitall()
+
+createthread(sleep_then_call(1, check, ''))
+
+
+# log(myfile.readat(8,0))
+
+
+
+# # Read the file to check the contents
+# try:
+#  assert('AAAAAAAA' == myfile.readat(8,0))
+#  #Close the file
+#  myfile.close()
+# except:
+#  #Close the file
+#  myfile.close()
+#  log("Valid Data write to a file is unsuccessfull!")

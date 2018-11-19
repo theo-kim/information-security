@@ -1,0 +1,41 @@
+# Test what happens insert valid values at the middle of each sequence
+
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAABBBBBBBBB", 0)
+try:
+	assert('AAAAAAAABBBBBBBB' == myfile.readat(16,0))
+except:
+	log("Valid Data write to a file is unsuccessfull! \n")
+
+myfile.writeat("CCC", 3) 
+try:
+	assert('CCC' == myfile.readat(3, 3))
+except:
+	log("Cannot write String \"CCC\" which should be valid here. \n")
+
+myfile.writeat("DDD", 10) 
+try:
+	assert('DDD' == myfile.readat(3, 10))
+except:
+	log("Cannot write String \"DDD\" which should be valid here. \n")
+
+myfile.writeat("CCCCDDDD", 4) 
+try:
+	assert('CCCCDDDD' == myfile.readat(8, 4))
+except:
+	log("Cannot write String \"CCCCDDDD\" which should be valid here. \n")
+
+myfile.writeat("DDDDEEEE", 12) 
+try:
+	assert('DDDDEEEE' == myfile.readat(8, 12))
+except:
+	log("Cannot write String \"DDDDEEEE\" which should be valid here. \n")
+
+myfile.close()

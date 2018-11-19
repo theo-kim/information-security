@@ -1,0 +1,17 @@
+#Test adding one character at a time to short string
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  myfile.writeat("AAAAAA",0)
+  myfile.writeat("B",6)
+  myfile.writeat("A",7)
+
+  myfile.close()
+except:
+  myfile.close()
+else:
+  log("-- Security test 2 failed -- \n")

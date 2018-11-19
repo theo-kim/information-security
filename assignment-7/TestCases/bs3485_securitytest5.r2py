@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# These writes should pass as  first it is even number of 8 byte sequence 
+#and then substituting C will give even number of non-even bytes in the sequence...
+#should produce no errors
+
+myfile.writeat("AAAAAAAA",0)
+myfile.writeat("C",7)
+assert('C' == myfile.readat(1,7))
+
+#Close the file
+myfile.close()

@@ -1,0 +1,30 @@
+# open file with same name multiple times & write into it twice
+
+# this write should fail...
+try:
+
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+	myfile2=openfile("testfile.txt",True)  #Create a parity file
+
+	# put some valid data in the file.
+	myfile.writeat("AAAAAAAA",0)
+
+	# put some valid data in the file.
+	myfile2.writeat("AAAAAAAA",0)
+
+	# I should be able to read it out.
+	assert('AAAAAAAA' == myfile.readat(None,0))
+	assert('AAAAAAAA' == myfile2.readat(None,0))
+
+	myfile.writeat("A",2)
+	myfile2.writeat("A",2)
+
+	#Close the file
+	myfile.close()
+	myfile2.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

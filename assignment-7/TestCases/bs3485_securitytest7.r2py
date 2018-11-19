@@ -1,0 +1,18 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# The first write should pass as it is even number of 8 byte sequence 
+#and then substituting CCCCB will give even number of non-even bytes in the sequence in first sequence
+#and B belongs to second sequence which is less than 8 bytes so directly write it
+#Thus it should pass with no errors
+
+myfile.writeat("AAAAAAAA",0)
+myfile.writeat("CCCCB",4)
+assert('CCCCB' == myfile.readat(5,4))
+
+
+  
+#Close the file
+myfile.close()

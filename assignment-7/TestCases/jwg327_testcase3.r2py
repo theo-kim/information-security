@@ -1,0 +1,22 @@
+# attempt to create two  threads to write to same file at the same time
+
+mycontext['ThreadActive'] = False
+def threadFunc():
+	if mycontext['threadActive']==True:
+		sleep(2)
+	mycontext['threadActive']=True
+	myfile=fileopen("textfile.txt",True)
+	try:
+	myfile.writeat("CDCDCD",0)
+    except RepyError:
+		pass
+	
+	else:
+	log("shouldnt have let me write")
+
+	
+
+createthread(threadFunc)
+createthread(threadFunc)
+	
+	

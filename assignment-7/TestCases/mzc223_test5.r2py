@@ -1,0 +1,29 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+#returns whether write was rejected due to parity correctly or not
+def writeRejected(myfile, data, offset):
+  try:
+    myfile.writeat(data, offset)
+  except RepyParityError:
+    return
+  
+  raise Exception("Expected write rejection but actually succeeded")
+
+#Asserts that what was written was actually written
+def assertWrite(myfile, data, offset):
+  myfile.writeat(data, offset)
+  assert(data == myfile.readat(len(data), offset))
+
+try:
+  assertWrite(myfile, b"\x00\x01\x01\x00\x00\x01\x00\x01\x01\x01\x01\x00\x01\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00", 0)
+  writeRejected(myfile, b"\x01\x00\x00\x00\x00\x01\x00\x01\x01\x00\x00\x00\x00\x00\x00\x01\x01\x00\x01", 0)
+
+except Exception as e:
+  log("Threw error when not expected\n")
+  log(e)
+  log("\n")
+finally:
+  myfile.close()

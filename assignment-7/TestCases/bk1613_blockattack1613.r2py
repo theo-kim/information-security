@@ -1,0 +1,17 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+
+
+myfile.writeat("AAAAAAAA",0)
+myfile.writeat("BB",0)
+try:
+    
+    assert('BBAAAAAA' == myfile.readat(8,0))
+    
+except:
+    log("Reference monitor is blocking vaild data")
+    myfile.close()
+else:
+    myfile.close()

@@ -1,0 +1,69 @@
+'''
+Bohan Zhang - Accuracy Test
+Testing: Writing non-even parity data to empty and non-empty files, 
+should fail to write 
+'''
+
+# delete existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# create a file
+myfile = openfile("testfile.txt",True)
+
+# empty file, invalid sequence write from the start
+try:
+    myfile.writeat("ABBBBBBB",0)
+except:
+    pass    
+else:
+    log("Non-even parity write to empty file. From offset 0\n")
+
+# empty file, invalid sequence from the offset
+try:
+    myfile.writeat("BBBBBBB",0)
+    myfile.writeat("A",7)
+except:
+    pass
+else:
+    log("Non-even parity write to empty file. From offset 7\n")
+
+# non empty file but before offset the sequence is valid, write 8 bytes of invalid sequence
+try:
+    myfile.writeat("BBBBBBBB",0)
+    myfile.writeat("ABBBBBBB",8)
+except:
+    pass
+else:
+    log("Non-even parity write to non-empty valid file. From offset 8\n")
+
+
+# non empty file but before offset the sequence is valid, 
+# write several chunks of 8 bytes of invalid sequence
+try:
+    myfile.writeat("BBBBBBBB",0)
+    myfile.writeat("A",8)
+    myfile.writeat("A",9)
+    myfile.writeat("AA",10)
+    myfile.writeat("ABBB",12)
+except:
+    pass
+else:
+    log("Non-even parity write to non-empty valid file. From multiple offsets\n")
+
+
+# non empty file but before offset the sequence is invalid, 
+# write several chunks of 8 bytes of valid sequence
+try:
+    myfile.writeat("ABBB",0)    # one odd, A, invalid 
+    myfile.writeat("BBBB",4)
+    myfile.writeat("A",8)
+    myfile.writeat("A",9)
+    myfile.writeat("AABBBB",10)   # 4 odd, valid, total, not valid
+except:
+    pass
+else:
+    log("Non-even parity write to non-empty invalid file. From multiple offsets\n")
+
+# When run past all cases
+myfile.close()

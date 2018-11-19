@@ -1,0 +1,25 @@
+# test to see if parity check performed on blocks in file or naively on blocks of 8 in data stream
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("D",0)
+except:
+	log("Accuracy error. writeat('D',0) on empty file not allowed\n")
+
+try:
+	myfile.writeat("DDDDDDDA",1) 
+except: 
+	log("Accuracy error. Block of DDDDDDDD not allowed\n")
+
+try:
+	assert("DDDDDDDDA" == myfile.readat(None,0))
+	myfile.close()
+except AssertionError:
+	log("Accuracy error. Valid write not allowed\n")
+	myfile.close()
+
+

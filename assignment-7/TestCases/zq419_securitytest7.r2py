@@ -1,0 +1,16 @@
+# write less than 8 with odd input
+
+try:
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+
+    myfile.writeat("AABAAAA", 0)
+    myfile.writeat("AABBBAA", 0)
+    myfile.writeat("AABBBBB", 0)
+    myfile.writeat("BBBBBBB", 0)
+
+    myfile.close()
+
+except:
+    log("ERROR\n")

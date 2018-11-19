@@ -1,0 +1,18 @@
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Read the file to check the contents
+try:
+    myfile.writeat("CCCCCCC",0)
+    myfile.writeat("C",7)
+    assert('CCCCCCCC' == myfile.readat(8,0))
+    #Close the file
+    myfile.close()
+except:
+  myfile.close()
+  log("Invalid")
+

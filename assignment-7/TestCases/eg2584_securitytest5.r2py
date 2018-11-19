@@ -1,0 +1,43 @@
+# Test 5
+    ## Multiple threads, correct
+
+start = False
+
+def test1():
+    x = True
+    while x:
+        if (start):
+            x = False
+            try:
+                myfile.writeat("ABAB",0)
+            except RepyParityError:
+                return
+
+def test2():
+    y = True
+    while y:
+        if (start):
+            y = False
+            try:
+                myfile.writeat("BBBB",1)
+            except RepyParityError:
+                return
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("AAAAAAAA", 0)
+    t1 = createthread(test1)
+    t2 = createthread(test2)                 # Create threads and wait
+    start = True                        # Start writing
+    sleep(1)                            # Don't know how to join
+    r = myfile.readat(None, 0)
+    if "ABABBAAA" == r:
+        log("Test5: Incorrect data written\n")
+    myfile.close()
+except:
+    myfile.close()

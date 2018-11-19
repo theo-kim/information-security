@@ -1,0 +1,26 @@
+# python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+
+# TEST CASE 6 : (Basic) Writing Long Text To The File
+# About Every 2-3 in 10 Successfully Write, Where The Others Don't Write.
+# Travis Wheelwright - tjw389
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+    
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("MYNAMEISTRAVISTHISISALONGSTRING",0)
+
+    # Close the file:
+    myfile.close()
+
+    log("ATTACK SUCCESSFUL!\n")
+
+except:
+    myfile.close()
+    # Error Handle or Failure Condition
+    # log("DATA NOT WRITTEN\n")

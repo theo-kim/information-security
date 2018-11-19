@@ -1,0 +1,26 @@
+# Invalid write to a non-ampty file
+
+# Clean up of existing file
+
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("ABABABA",0)
+ # read from the file to see if the write was successful.
+ assert('ABABABA' == myfile.readat(None,0))
+ # write vinalid data onto the file.
+ myfile.writeat("A", 0)
+ assert ('ABABABAA' == myfile.readat(None, 0))
+ log("Invalid data written!\n")
+ # Close the file:
+ myfile.close()
+except:
+ assert ('ABABABA' == myfile.readat(None, 0))
+ myfile.close()
+ # Error Handle or Failure Condition
+

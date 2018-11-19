@@ -1,0 +1,14 @@
+# Valid Write Operation on an empty file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+try:
+  myfile.writeat("BCBCBCBCAA",0)
+  assert('BCBCBCBCAA' == myfile.readat(None,0))
+  myfile.close()
+except:
+  myfile.close()
+  log("BCBCBCBCAA not written in empty file!")

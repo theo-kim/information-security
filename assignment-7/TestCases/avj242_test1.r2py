@@ -1,0 +1,8 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+myfile.writeat("AV",0)
+assert('BC' == myfile.readat(2,0))
+
+myfile.close()

@@ -1,0 +1,21 @@
+# Open a file
+#Attempting to write to the same location in file twice
+myfile=openfile("testfile.txt",True)
+ 
+# Attempt to write "ABCD" to the file
+try:
+  myfile.writeat("ABCD",1)
+# Attempt to write "BCAB" to the file
+  myfile.writeat("BCAB",1)
+ 
+# It raised an Exception :
+except ValueError:
+  log("The security layer correctly blocked the write!!!")
+ 
+# No Exception was raise (as it was supposed to)
+else:
+  log("Write okay!")
+ 
+finally:
+  # Close the file after our attempt.
+  myfile.close()

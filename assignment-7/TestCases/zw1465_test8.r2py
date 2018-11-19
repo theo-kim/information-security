@@ -1,0 +1,30 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+myfile.writeat("CCAAAAACCB",0)
+
+
+try:
+  myfile.writeat("DDDDDDDD", 8)
+except:
+  log("Write data over existing data wrong !")
+
+
+try:
+ assert('CCAAAAACDDDDDDDD' == myfile.readat(16,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Write data over existing data wrong !")
+
+
+

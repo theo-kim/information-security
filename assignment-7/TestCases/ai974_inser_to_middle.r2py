@@ -1,0 +1,23 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+  myfile.writeat("AA", 0)
+except:
+  log("failed B inserted makes non-even parity\n")
+
+#this should not be allowed
+try:
+  myfile.writeat("B", 1)
+  log("failed B inserted makes non-even parity\n")
+except RepyParityError:
+  # should not happen
+  pass
+
+except:
+  log("failed B inserted makes non-even parity\n")
+
+#Close the file
+myfile.close()

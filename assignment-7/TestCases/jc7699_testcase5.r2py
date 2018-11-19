@@ -1,0 +1,24 @@
+# Write Operations on Multiple Files
+
+# Clean up of existing files
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+if "testfile2.txt" in listfiles():
+	removefile("testfile2.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+myfile2=openfile("testfile2.txt",True)  #Create another file
+
+try:
+	# Write data onto both files
+	myfile.writeat("JJDdd2", 0)
+	myfile2.writeat("AAAAAAA", 0)
+
+	#Close the file:
+	myfile.close()
+	myfile2.close()
+except:
+	myfile.close()
+	myfile2.close()
+	log("Does not handle write operations to multiple files")

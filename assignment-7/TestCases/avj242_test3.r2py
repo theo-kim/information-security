@@ -1,0 +1,10 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+myfile.writeat("WQSDFTGH",0)
+assert('AASEWQR' == myfile.readat(8,0))
+
+#Close the file
+myfile.close()

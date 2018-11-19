@@ -1,0 +1,19 @@
+# Write valid non-aligned sequence to non-empty file
+# Should be allowed
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+myfile.writeat("AAAAAAAABBB",0)
+
+try:
+  # Write at offset 7 modifies two 8-byte sequences
+  # In this case, even parity cond is preserved
+  myfile.writeat("AA",7)
+  assert('AAAAAAAAABB' == myfile.readat(11,0))
+except:
+  log("Valid data not written!\n")
+
+myfile.close()

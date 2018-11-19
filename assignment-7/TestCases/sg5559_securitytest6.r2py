@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+try:
+	myfile.writeat("ABCDEFGHIJKLMNOPQRST",0)
+	myfile.writeat("AA",25)
+except :
+	try:
+	 assert('AA' == myfile.readat(2,25))
+	 myfile.close()
+	except:
+	  log("Invalid Data write to a file is successfull!")
+	  myfile.close()
+		  
+

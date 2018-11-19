@@ -1,0 +1,24 @@
+# Even WRITE Operation on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+myfile.writeat("DDEEDDD",0)
+# Write data over existing data in the file
+myfile.writeat("D",7)
+
+# Read the file to check the contents
+try:
+    # read from the file to see if the write was successful.
+    assert('DDEEDDDD' == myfile.readat(8,0))
+    # Close the file
+    myfile.close()
+except:
+    myfile.close()
+    # Error Handle or Failure Condition
+    log("Valid Even Parity data is written.")

@@ -1,0 +1,24 @@
+if "testfile2.txt" in listfiles():
+    removefile("testfile2.txt")
+
+myfile=openfile("testfile2.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("AAAEEAAb",0)
+
+# I should be able to read it out.
+assert('AAAEEAAb' == myfile.readat(None,0))
+
+# However, this write should fail...
+try:
+    myfile.writeat("AAAEEAAb",8)
+    assert('AAAEEAAb' == myfile.readat(8,0))
+except RepyParityError:
+    pass
+    log("Non-even parity was written to the file!\n")
+    myfile.close()
+else:
+    myfile.close()
+    log("Valid Data write to a file is unsuccessfull!\n")
+
+myfile.close()

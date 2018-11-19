@@ -1,0 +1,19 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+
+testfile.write("BCBCBC")
+
+# I should be able to read it out.
+# However, this write should fail...
+try:
+  assert('BCBCBC' == myfile.readat(None,0))
+  myfile.close()
+  log("Security was circumvented")
+except:
+  myfile.close()
+ 
+

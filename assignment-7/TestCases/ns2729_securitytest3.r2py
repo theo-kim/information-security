@@ -1,0 +1,28 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+if "testfile2.txt" in listfiles():
+  removefile("testfile2.txt")
+
+
+myfile=openfile("testfile.txt",True)  
+myfile2=openfile("testfile2.txt",True) 
+
+myfile.writeat("AAAAAAA",0)
+myfile.writeat("A",7)
+
+
+try:
+ assert('AAAAAAAA' == myfile.readat(8,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("Valid Data write to a file is not successful")
+
+try:
+ myfile2.writeat("ABBA",0)
+ assert('ABBA' == myfile2.readat(4,0))
+ myfile2.close()
+except:
+ myfile2.close()
+ log("Valid data was not written!")

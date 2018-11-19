@@ -1,0 +1,70 @@
+# Valid Write Operation on a non-empty file
+# write valid data to the file
+def write(data, offset, num):
+	def test_write():
+		try:
+			myfile.writeat(data,offset)
+		except:
+			pass
+		name = mycontext['check'][num]
+		mycontext[name] = True
+	return test_write
+
+# check the other thread terminated or not every second, if terminated, check file written, else wait for 1 second and check again
+def killandcheck():
+	count = 0
+	check = True
+	# after 7 second, even the thread not terminated, terminate all the other threads
+	while count <= 7:
+		check = True
+		# check the write operation finished
+		for i in mycontext['check']:
+			if not mycontext[i]:
+				check = mycontext[i]
+		if check:
+			break
+		# not finished, wait 1 second
+		else:
+			sleep(1)
+		count+=1
+	if not check:
+		exitall()
+	# check the file
+	try:
+	 	# read from the file to see if the write was successful.
+	 	assert('ABcdEFMN' == myfile.readat(8,0))
+	 	# Close the file:
+	 	myfile.close()
+	except:
+	 	myfile.close()
+	 	# Error Handle or Failure Condition
+	 	log("Accuracy bug 7: Valid data written to a non-empty file via thread is unexpected!\n")
+
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ 	removefile("testfile.txt")
+
+# set global variables to check each thread terminated
+mycontext['check1'] = False
+mycontext['check2'] = False
+mycontext['check3'] = False
+mycontext['check4'] = False
+mycontext['check5'] = False
+mycontext['check'] = ['check1', 'check2', 'check3', 'check4', 'check5']
+data = [['CD',2], ['abcdefgh',0], ['EF',4], ['MN',6], ['AB',0]]
+num = 0
+thread = []
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+#write valid data to the file
+try:
+	myfile.writeat("ABABABAB",0)
+except:
+	pass
+#use thread to write valid data
+for i in range(5):
+	thread.append(write(data[i][0], data[i][1], i))
+createthread(killandcheck)
+for newthread in thread:
+	createthread(newthread)

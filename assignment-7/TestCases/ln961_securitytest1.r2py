@@ -1,0 +1,18 @@
+#tests appending invalid data to an end of 8 byte sequence, no data leftover data to right
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+
+myfile.writeat("AA",0)
+
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("Invalid Date Overwrite	")
+  
+#Close the file
+myfile.close()

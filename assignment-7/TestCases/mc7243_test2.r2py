@@ -1,0 +1,40 @@
+# Test parity
+  
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+myfile.writeat("AAAAAAAA",0)
+myfile.writeat("AAAAAAAA",8)
+myfile.writeat("AAAAAAAA",16)
+
+try:
+  myfile.writeat("BAAACAAAAAB",7)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+try:
+  myfile.writeat("CAAACAAAAAB",7)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+try:
+  myfile.writeat("BAAACAAAAAC",7)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+myfile.writeat("CAAACAAAAAC",7) # should work
+
+assert('AAAAAACAAACAAAAACAAAAAA' == myfile.readat(None,24))
+          
+############################
+
+#Close the file
+myfile.close()

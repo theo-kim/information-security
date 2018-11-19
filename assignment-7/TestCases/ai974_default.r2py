@@ -1,0 +1,21 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+try:
+  myfile.writeat("AA",0)
+except:
+  log("Failed default test case provided in prompt\n")
+
+# However, this write should fail...
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("Failed default test case provided in prompt\n")
+
+#Close the file
+myfile.close()

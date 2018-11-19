@@ -1,0 +1,51 @@
+# Valid Write Operation on a re-opened non-empty file
+
+# timer incase deadlock or loop forever
+def time_out():
+    log('Running too long, deadlock or loop forever!\n')
+    exitall()
+def time_limit(pause_in_seconds, call_function):
+    def configured_timer_function():
+        sleep(pause_in_seconds)
+        call_function()
+    return configured_timer_function
+
+def run_test():
+
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+
+    myfile = openfile("testfile.txt", True)  # Create a parity file
+
+    # in case unexpected output due to wrong even-check
+    try:
+        # Write 7-byte valid data to the file
+        myfile.writeat("AAAAAAA",0)
+    except RepyParityError:
+        log("Valid Data blocked as non-even!\n")
+    except (CodeUnsafeError, NameError) as e:
+        log("Code error found. {}\n".format(e.args[-1]))
+    finally:
+        myfile.close()
+
+
+    # re-open the same file again
+    myfile = openfile("testfile.txt", True)  # Create a parity file
+
+    # continue to write 9-byte valid data 
+    try:
+        myfile.writeat("ABBBBBBBB",7)
+        assert("AAAAAAAABBBBBBBB" == myfile.readat(None, 0))
+    except (CodeUnsafeError, NameError) as e:
+        log("Code error found. {}\n".format(e.args[-1]))
+    except:
+        log("Valid data not written!\n")
+    finally:
+        myfile.close()
+    exitall()
+
+
+if callfunc == "initialize":
+    configured_function = time_limit(5, time_out)
+    createthread(configured_function)
+    run_test()

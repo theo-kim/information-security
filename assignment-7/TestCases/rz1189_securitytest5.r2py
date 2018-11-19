@@ -1,0 +1,47 @@
+# Write to a non-ampty file with multiple threads
+def isEven(data):
+    even = True
+    for thisbyte in data:
+        if ord(thisbyte) % 2:
+            even = not even
+    return even
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+mycontext['index'] = 0
+
+def writeA():
+
+    myfile.writeat('A', mycontext['index'])
+    mycontext['index'] += 1
+    content = myfile.readat(None, 0)
+    content = content[:8*(len(content)/8)]
+    if not isEven(content):
+        log("Invalid data written!\n")
+
+def writeB():
+
+    myfile.writeat('B', mycontext['index'])
+    mycontext['index'] += 1
+    content = myfile.readat(None, 0)
+    content = content[:8*len(content)/8]
+    if not isEven(content):
+        log("Invalid data written!\n")
+
+try:
+
+    threads = []
+    for i in range(0, 100):
+        createthread(writeA)
+        createthread(writeB)
+
+
+    myfile.close()
+except:
+    myfile.close()
+

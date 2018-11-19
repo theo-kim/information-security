@@ -1,0 +1,24 @@
+
+# Clean up old file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+# 2. Valid write: Begin to write an 8-byte sequence with parity
+case_txt = "2. Valid write: Begin to write an 8-byte sequence with parity \n"
+try:
+    myfile.writeat("AAAAAABB", 0)
+    assert("AAAAAABB" == myfile.readat(None,0))
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Caught RepyParityError when the write is supposed to be valid \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not properly write to file as it was supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but was not supposed to result in error \n")
+
+#Close the file
+myfile.close()

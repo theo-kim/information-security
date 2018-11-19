@@ -1,0 +1,14 @@
+testfile="testfile"
+if testfile in listfiles():
+    removefile(testfile)
+
+f = openfile(testfile, True)
+
+try:
+    f.writeat("BBBBBBBBCCCCCCCC", 0)
+    f.writeat("CCCCC", 6)
+    assert("BBBBBBCCCCCCCCCC" == f.readat(16, 0))
+    f.close()
+except:
+    f.close()
+    log("Could not write valid data across two zones\n")

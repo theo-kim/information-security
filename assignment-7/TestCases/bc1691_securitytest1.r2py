@@ -1,0 +1,19 @@
+# Test case security 1
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+#Open file function call
+myfile=openfile("testfile.txt",True)
+
+
+myfile.writeat("AA",0)
+assert('AA' == myfile.readat(None,0))
+
+try:
+    myfile.writeat("BCBCBC",2)
+except RepyParityError:
+    myfile.close()
+else:
+    myfile.close()
+    log("Security bug")

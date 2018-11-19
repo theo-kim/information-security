@@ -1,0 +1,26 @@
+# python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+
+# TEST CASE 8 : Overwriting Previously Written Data
+# Travis Wheelwright - tjw389
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("YMMV",0)
+    myfile.writeat("REAL",2)
+    assert('YMREAL' == myfile.readat(6,0))
+
+    # Close the file:
+    myfile.close()
+
+    log("ATTACK SUCCESSFUL!\n")
+
+except:
+    myfile.close()
+    # Error Handle or Failure Condition
+    # log("DATA NOT WRITTEN\n")

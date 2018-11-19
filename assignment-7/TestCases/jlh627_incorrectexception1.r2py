@@ -1,0 +1,48 @@
+# this tests writes outside the end of the file.
+# Writes like this should raise an exception indicating that a write outside
+# the end of the file was attempted, but these implementations indicate that
+# an invalid parity was used, or raise no error at all.
+# Because these exceptions must be handled appropriately by the application,
+# this behavior is buggy.
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)  # Create a parity file
+
+try:
+    myfile.writeat("aUuoLwfdTCarlR", 19)
+except SeekPastEndOfFileError:
+    pass # this is expected behavior
+
+# hits:
+# reference_monitor_ak7352.r2py
+# reference_monitor_as11867.r2py
+# reference_monitor_dcd310.r2py
+# reference_monitor_dga264.r2py
+# reference_monitor_iar252.r2py
+# reference_monitor_jc7699.r2py
+# reference_monitor_joe215.r2py
+# reference_monitor_jpk389.r2py
+# reference_monitor_jr4222.r2py
+# reference_monitor_jt2908.r2py
+# reference_monitor_jt3135.r2py
+# reference_monitor_km3949.r2py
+# reference_monitor_kps325.r2py
+# reference_monitor_ln961.r2py
+# reference_monitor_mb6004.r2py
+# reference_monitor_my35.r2py
+# reference_monitor_ns2729.r2py
+# reference_monitor_rd2589.r2py
+# reference_monitor_rs3254.r2py
+# reference_monitor_sa5183.r2py
+# reference_monitor_sx563.r2py
+# reference_monitor_tl1094.r2py
+# reference_monitor_vz365.r2py
+# reference_monitor_wcu201.r2py
+# reference_monitor_wl1508.r2py
+# reference_monitor_wy830.r2py
+# reference_monitor_xj589.r2py
+# reference_monitor_xl2590.r2py
+
+# Close the file
+myfile.close()

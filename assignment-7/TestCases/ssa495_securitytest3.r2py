@@ -1,0 +1,17 @@
+# Checking invalid data write
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AABCBCBC",0)
+
+try:
+  assert('AABCBCBC' == myfile.readat(8,0))
+except:
+  pass
+  myfile.close()
+else:
+  myfile.close()
+  log("Invalid data written to an empty file!")

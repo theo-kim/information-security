@@ -1,0 +1,18 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+#should not be able to put strings inside readat
+try:
+  myfile.writeat("someDataToInser", "this also should not be allowed")
+
+except RepyParityError:
+  # should happen
+  pass
+
+except:
+  log("failed string as offsetParam\n")
+
+#Close the file
+myfile.close()

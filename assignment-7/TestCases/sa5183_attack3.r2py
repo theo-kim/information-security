@@ -1,0 +1,20 @@
+# Valid more than 8 byte WRITE on an empty file
+# reference_monitor_ac7244.r2py goes in an infinite loop or takes a very long time, which shouldn't be the case
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Read the file to check the contents
+try:
+ # write valid data onto the file.
+ myfile.writeat("BCBCBCBCBCBCBCBCBC",0)
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Valid Data write to a file is unsuccessfull!\n")

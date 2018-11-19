@@ -1,0 +1,18 @@
+
+try:
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+    myfile2 = openfile("testfile2.txt", True)
+
+    myfile.writeat("AAAAAAAA", 0)
+    myfile2.writeat("AA", 0)
+
+    myfile.writeat("BB", 4)
+    myfile2.writeat("BB", 0)
+
+    myfile.close()
+    myfile2.close()
+
+except:
+    log("ERROR\n")

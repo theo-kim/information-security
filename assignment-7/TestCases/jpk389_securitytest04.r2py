@@ -1,0 +1,15 @@
+# remove and re-create test file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+myfile.writeat("AA",0)
+
+try:
+    myfile.writeat("AAA",0)
+    myfile.close()
+    log("data written!\n")
+except:
+    myfile.close()
+    pass

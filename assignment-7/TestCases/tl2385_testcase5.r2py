@@ -1,0 +1,32 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+myfile.writeat("YYYYYYYYZZZZZZZZ", 0)
+
+myfile.writeat("X", 0) 
+try:
+	assert('C' == myfile.readat(1, 0))
+except:
+	log("Valid data not written! \n")
+
+myfile.writeat("XXXX", 0) 
+try:
+	assert('XXXX' == myfile.readat(4, 0)) 
+except:
+	log("Valid data not written! \n")
+
+myfile.writeat("XXXXXXX", 0) 
+try:
+	assert('XXXXXXX' == myfile.readat(7, 0))
+except:
+	log("Valid data not written! \n")
+
+myfile.writeat("AAB", 8)
+try:
+	assert('AAB' == myfile.readat(3, 8))
+except:
+	log("Valid data not written! \n")
+
+myfile.close()

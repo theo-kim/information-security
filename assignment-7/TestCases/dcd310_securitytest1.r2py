@@ -1,0 +1,12 @@
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+ myfile.writeat("BCBCBC",0)
+ assert('BCBCBC' == myfile.readat(6,0))
+ log("Invalid data written!")
+ myfile.close()
+except:
+ myfile.close()

@@ -1,0 +1,29 @@
+# Write to 3 random locations
+
+# Delete any existing files
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open new file
+myfile=openfile("testfile.txt",True)  #Create a file
+
+
+#Define counter
+counter = 0;
+
+# Write valid data to the file at random location 3 times
+while(counter < 3):
+  rando = random.randint(1,10)
+  myfile.writeat("AAAAAAAAA", rando)
+
+  try:
+    assert(text == myfile.readat(rando,0))
+    myfile.close()
+    except:
+      myfile.close()
+      log("Valid Data write to a file is unsuccessfull!")
+
+  counter += 1;
+
+
+

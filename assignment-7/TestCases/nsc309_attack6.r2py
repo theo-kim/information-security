@@ -1,0 +1,21 @@
+# open one file and write into it twice
+
+# this write should fail...
+try:
+
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+
+	# I should be able to read it out.
+	assert('AAAAAAAA' == myfile.readat(None,0))
+
+	myfile.writeat("B",2)
+	myfile.writeat("B",2)
+  
+	#Close the file
+	myfile.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

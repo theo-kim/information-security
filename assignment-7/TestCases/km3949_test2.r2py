@@ -1,0 +1,2 @@
+# Security test: uppercase filename
+myfile = openfile("Test.txt", True)

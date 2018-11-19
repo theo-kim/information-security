@@ -1,0 +1,47 @@
+
+# Clean up old file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+# 8 prerequisite: File already contains two 8-byte sequences with parity, and
+# a 3-byte sequence at the end without parity
+case_txt = "8 prerequisite: File already contains two 8-byte sequences with \nparity, and a 3-byte sequence at the end without parity \n"
+try:
+    myfile.writeat("AAAAABCBCABABCBBAAA", 0)
+    assert("AAAAABCBCABABCBBAAA" == myfile.readat(None,0))
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Caught RepyParityError when the write is supposed to be valid \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not properly write to file as it was supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but was not supposed to result in error \n")
+
+
+# 8. Invalid write: Attempt to write past end-of-file
+case_txt = "8. Invalid write: Attempt to write past end-of-file \n"
+try:
+    myfile.writeat("ABABABAB", 24)
+    assert("ABABABAB" == myfile.readat(None, 24))
+except SeekPastEndOfFileError:
+    pass # Supposed to happen
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Supposed to catch SeekPastEndOfFileError, but instead caught RepyparityError \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Supposed to catch SeekPastEndOfFileError, but instead caught AssertionError \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but did not catch RepyParityError as supposed to \n")
+else:
+    log("Case: " + case_txt)
+    log("Error: successful write when SeekPastEndOfFileError should have been raised \n")
+
+
+#Close the file
+myfile.close()

@@ -1,0 +1,16 @@
+# Accuracy Test 4
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+myfile.writeat("AAAABB", 0)
+myfile.writeat("BABAAAAAAB", 4)
+
+try:
+	assert("AAAABABAAAAAAB" == myfile.readat(16, 0))
+except:
+	log("Accuracy Bug 4\n")
+
+myfile.close()

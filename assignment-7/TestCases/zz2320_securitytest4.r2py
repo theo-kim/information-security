@@ -1,0 +1,27 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",0)
+
+# I should be able to read it out.
+assert('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' == myfile.readat(None,0))
+
+myfile.writeat("BB",20)
+
+assert( 'AAAAAAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' == myfile.readat(None,0))
+
+# However, this write should fail...
+try:
+  myfile.writeat("B",9)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!")
+  
+#Close the file
+myfile.close()
+
+#ac7244- infinite loop; skipped this to check others

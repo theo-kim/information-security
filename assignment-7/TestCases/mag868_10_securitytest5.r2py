@@ -1,0 +1,44 @@
+
+# Clean up old file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+# 10 prerequisite: File already contains two 8-byte sequences with parity, and
+# a 3-byte sequence at the end without parity
+case_txt = "10 prerequisite: File already contains two 8-byte sequences with \nparity, and a 3-byte sequence at the end without parity \n"
+try:
+    myfile.writeat("AAAAABCBCABABCBBAAA", 0)
+    assert("AAAAABCBCABABCBBAAA" == myfile.readat(None,0))
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Caught RepyParityError when the write is supposed to be valid \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not properly write to file as it was supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but was not supposed to result in error \n")
+
+
+# 10. Invalid write: Finish end 8 byte sequence with no parity
+case_txt = "10. Invalid write: Finish end 8 byte sequence with no parity \n"
+try:
+    myfile.writeat("BBBBB", 19)
+    assert("BBBBB" == myfile.readat(None, 19))
+except RepyParityError:
+    pass # Should happen
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not write properly to file, but did not catch RepyParityError as supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but did not catch RepyParityError as supposed to \n")
+else:
+    log("Case: " + case_txt)
+    log("Error: successful write when RepyParityError should have been raised \n")
+
+
+#Close the file
+myfile.close()

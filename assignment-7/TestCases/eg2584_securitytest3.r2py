@@ -1,0 +1,18 @@
+#Test 3:
+    ## Writing more that 8+ Bytes, Correct
+
+
+#Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("AABBAABBAABBAABBAABBAABB",0)
+    assert("AABBAABBAABBAABBAABBAABB" == myfile.readat(None,0))
+    myfile.close()
+except:
+    myfile.close()
+    log("Test3: Correct data not written\n")

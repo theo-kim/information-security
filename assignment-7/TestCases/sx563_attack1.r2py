@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("DD",0)
+
+# I should be able to read it out.
+assert('DD' == myfile.readat(None,0))
+
+# However, this write should pass
+try:
+	myfile.writeat("EFEFFFAAAAAAAA",2)
+except RepyParityError:
+	log("This write on non-8-byte-aligned portion of the file should not result in an error\n")
+
+  
+#Close the file
+myfile.close()

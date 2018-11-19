@@ -1,0 +1,25 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+
+# put some valid data in the file.
+myfile.writeat("DD",0)
+
+# I should be able to read it out.
+assert('DD' == myfile.readat(None,0))
+
+# put more valid data in the file.
+myfile.writeat("EFEFFFAAAAAAAA",2)
+
+
+
+try:
+	assert('DDEFEFFFAAAAAAAA' == myfile.readat(16,0))
+except Exception:
+	log("This write on non-8-byte-aligned portion of the file is incorrect\n")
+
+  
+#Close the file
+myfile.close()

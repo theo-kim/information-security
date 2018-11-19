@@ -1,0 +1,59 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+myFile=openfile("testfile.txt",True) #create new testfile
+goodSoFar = True
+
+try: #write valid data (i.e. 16 B's)
+ myFile.writeat("BBBBBBBBBBBBBBBB",0)
+except: #parity error even if there shouldn't be
+ ##log("parity error for writing even parity\n")
+ myFile.close()
+ goodSoFar = False
+else:
+ #log("parity check is fine part 1")
+ pass
+
+#we have a file with Bx16
+#now try to modify index 10 to make second block false
+
+if (goodSoFar):
+ try:
+  myFile.writeat("AA", 0)
+  #log("part2 write AA fine")
+  myFile.writeat("E",9) #this should trigger parity error in block 2
+  #log(" write successful in part 2")
+ except: #parity error should occur
+  #myFile.close() #why does this cause freeze?
+  #log("part 2 parity check works as should\n")
+  pass
+ else: #parity error didn't occur
+  log("parity check failed for 1 block overwrite (false negative)\n")
+  myFile.close()
+
+
+#ignore notes below
+"""
+closedFile = False
+
+log("testing person")
+try:
+  myfile.writeat("AABBBBBBBAABBBBBBA",0)
+except RepyParityError:
+  log("write access denied")
+  pass  # should happen (pass means do nothing, move on)
+except: #close the file if there are other fatal errors
+   myfile.close()
+   log("some other error")
+   closedFile = True
+
+
+else: #if no parity error, then print that there is none
+  log("Writing is allowed")
+  myfile.close()
+  
+log("done_with_test\n")
+"""

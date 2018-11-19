@@ -1,0 +1,33 @@
+# Valid Write Operation on an empty file
+# Write special characters in file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+#Special character
+charDict = ["😄", "🙏", "😊", "😋", "😸", "🌻", "🍑", "🍉"]
+
+
+writesequence = ""
+
+for i in range(0, 8):
+	writesequence = charDict[i]
+	try:
+	 	# write valid data onto the file.
+		myfile.writeat(writesequence, 0)
+		# read from the file to see if the write was successful.
+		assert(writesequence == myfile.readat(4, 0))
+	except:
+	 	# Error Handle or Failure Condition
+	 	log("Valid data not written!\n")
+
+	#Reset
+	writesequence = ""
+	
+
+myfile.close()
+

@@ -1,0 +1,25 @@
+# Append WRITE Operation on a file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# write valid data onto the file.
+myfile.writeat("DDDDDD",0)
+# Write data over existing data in the file
+myfile.writeat("EE",6)
+
+# Read the file to check the contents
+try:
+    # read from the file to see if the write was successful.
+    assert('DDDDDDEE' == myfile.readat(8,0))
+except RepyParityError:
+    # Error Handle or Failure Condition
+    log("Valid Append Parity data is not written.")
+    myfile.close()
+else:
+    # Close the file:
+    myfile.close()

@@ -1,0 +1,33 @@
+
+try:
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+
+    myfile.writeat("BBAAAAAABA", 0)
+    # BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 8)
+    # BBAAAAAA BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 16)
+    # BBAAAAAA BBAAAAAA BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 24)
+    # BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 32)
+    # BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 40)
+    # BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BA
+
+    myfile.writeat("BBAAAAAABA", 48)
+    # BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BBAAAAAA BA
+
+    assert myfile.readat(None, 0) == "BBAAAAAABBAAAAAABBAAAAAABBAAAAAABBAAAAAABBAAAAAABBAAAAAABA"
+
+    myfile.close()
+
+except:
+    log("ERROR\n")

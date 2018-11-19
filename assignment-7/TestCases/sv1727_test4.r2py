@@ -1,0 +1,17 @@
+# in VALID WRITES - offset beyond EOF 
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("ABABABABABABABAB",0) # VALID
+    myfile.writeat("CDA", 20) # VALID ABABABABACDABAB",0)
+    myfile.close()
+except SeekPastEndOfFileError:
+    pass
+else:
+    log("\n\n\n\n should be eof error \n\n\n\n")

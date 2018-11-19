@@ -1,0 +1,29 @@
+def writegene(file, content, offset):
+    def writedown():
+        try:
+            file.writeat(content, offset)
+        except:
+            log("Wrong concurrent\n")
+    return writedown
+
+
+
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+try:
+    myfile.writeat("AAAAAAA", 0)
+    assert("AAAAAAA" == myfile.readat(None, 0))
+except:
+    log("wrong")
+
+createthread(writegene(myfile, "A", 7))
+
+try:
+    myfile.writeat("B", 7)
+except:
+    pass
+else:
+    log("Wrong concurrent\n")

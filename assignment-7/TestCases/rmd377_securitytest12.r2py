@@ -1,0 +1,23 @@
+# test basic for log statements. Safe and accurate code should output nothing
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("A",0) # test of basic functionality
+except:
+	pass
+
+try:
+	myfile.writeat("B",1) # test of basic functionality
+except:
+	pass
+
+try:
+	myfile.readat(None, 0) # test of basic functionality
+except:
+	pass
+
+myfile.close()

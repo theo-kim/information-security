@@ -1,0 +1,19 @@
+#Test 4
+    ## Writing 8 Byes in the middle of a file, Incorrect
+
+
+#Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("AABBAABBAABBAABBAABBAABB",0)
+    myfile.writeat("ABABABAB", 1)
+    assert("AABABABABABBAABBAABBAABB" == myfile.readat(None,0))
+    log("Test4: Invalid data written\n")
+    myfile.close()
+except:
+    myfile.close()

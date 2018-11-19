@@ -1,0 +1,17 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+try:
+	myfile.writeat("BBBBBBBB",0)
+	myfile.writeat("AC", 7)
+
+except RepyParityError:
+	try:
+		assert('BBBBBBBB' == myfile.readat(8,0))
+	except:
+		log("WARNING: SUCCESSFULLY BYPASS, THIS SHOULD NOT HAPPEN\n")
+	else:
+		log("")
+else:
+	log("WARNING: SUCCESSFULLY BYPASS, THIS SHOULD NOT HAPPEN\n")

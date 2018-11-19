@@ -1,0 +1,19 @@
+# Write Operation with empty value
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)
+# Write empty data onto the file   
+myfile.writeat("",0)
+
+try:
+	# Read the file to check the contents
+	assert('EZ' == myfile.readat(None,0))
+	# Close the file
+	myfile.close()
+except:
+	myfile.close()
+	log("Does not handle empty write command")

@@ -1,0 +1,38 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+goodSoFar = True
+
+try:
+ # Write valid data to the file
+ myfile.writeat("AAAAAAA",0) #last 7 bits should be written regardless of parity
+except: #didn't write when supposed to
+ log("parity check failed when writing last <8 bits\n")
+ goodSoFar = False
+ myfile.close()
+
+if (goodSoFar):
+ try:
+  # Write data over existing data in the file
+  myfile.writeat("A",7) #this should work
+ except: #parity error when not supposed to
+  log("parity check failed to overwrite last <8 bits\n")
+ else: #parity check is fine thus far, check to see if everything was written correctly
+ # Read the file to check the contents
+  try:
+   assert('AAAAAAAA' == myfile.readat(8,0))
+   #Close the file
+   myfile.close()
+  except:
+   #Close the file
+   myfile.close()
+   log("didn't write correctly from 7bit to 8bit valid data\n")
+  else: #everything is sucessful
+   #log("test2 successful\n")
+   pass

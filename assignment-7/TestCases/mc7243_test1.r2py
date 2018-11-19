@@ -1,0 +1,23 @@
+# Test parity
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("AA",0)
+
+# I should be able to read it out.
+assert('AA' == myfile.readat(None,0))
+
+# However, this write should fail...
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+#Close the file
+myfile.close()

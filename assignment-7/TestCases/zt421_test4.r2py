@@ -1,0 +1,28 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True) 
+
+mutex = []
+
+def run():
+ try:
+  myfile.writeat('BBBBBBBBB', 0)
+ except:
+  pass
+ mutex.pop()
+
+mutex.append(0)
+createthread(run)
+try:
+ myfile.writeat('AAA', 0)
+ while len(mutex) != 0:
+  pass
+
+ assert('AAABBBBBB' == myfile.readat(9,0))
+except:
+ myfile.close()
+
+else:
+ myfile.close()
+ log("Failed to raise parity error")

@@ -1,0 +1,49 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+mylock = createlock()
+mycontext['flag'] = 0
+
+def race():
+  def attack():
+    try:
+        myfile.writeat('1'*2, 5)
+    except RepyParityError:
+        pass #should happen
+
+
+
+  mycontext['flag'] = 1
+  while(not mylock.acquire(False)):
+      pass
+
+  attack()
+  mylock.release()
+  return
+
+myfile.writeat('0'*64, 0)
+mylock.acquire(True)
+createthread(race)
+while(not mycontext['flag']):
+    pass
+mylock.release()
+try:
+  myfile.writeat('1'*8000, 6)
+except RepyParityError:
+  pass
+while(not mylock.acquire(False)):
+    pass
+
+start = myfile.readat(8, 0)
+
+assert(start == '00000011' or start == '00000110')
+# try:
+#     assert("00000000"==myfile.readat(None, 0))
+# except AssertionError:
+#     log('you be finished man\n')
+
+
+
+myfile.close()

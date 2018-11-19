@@ -1,0 +1,21 @@
+######################################################################################################
+# Test case 10: check valid data write and read on multible file, should allow
+######################################################################################################
+
+#Create test files
+for i in range(1, 100):
+    filename = 'testfile' + str(i) + '.txt'
+    myfile=openfile(filename,True)
+    try:
+        # Write valid data to the file
+        myfile.writeat("AAAAAA",0)
+        myfile.close()
+    except:
+        myfile.close()
+        log("Test 10 failed! Valid data not written on empty file!\n")
+
+# Clean up of existing file
+for i in range(1, 100):
+    filename = 'testfile' + str(i) + '.txt'
+    if filename in listfiles():
+        removefile(filename)

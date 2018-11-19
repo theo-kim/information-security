@@ -1,0 +1,43 @@
+######################################################################################################
+# Test case 11: check multiple threads write and read, should allow
+######################################################################################################
+
+mycontext['ThreadOn'] = False;
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+#Create a parity test file
+myfile=openfile("testfile.txt",True)
+
+def thread():
+    while mycontext['ThreadOn'] == True:
+        sleep(1)
+    mycontext['ThreadOn'] = True
+    try:
+        # Write valid data to the file
+        myfile.writeat('AAAAAAAAAA',0)
+    except:
+        log("Test 11 failed! Valid data not written!\n")
+    finally:
+        mycontext['ThreadOn'] = False
+
+def thread_bad():
+    while mycontext['ThreadOn'] == True:
+        sleep(1)
+    mycontext['ThreadOn'] = True
+    try:
+        # Write valid data to the file
+        myfile.writeat('BBBBBAAA',0)
+        assert('BBBBB' == myfile.readat(5,0))
+    except:
+        pass
+    else:
+        log("Test 11 failed! INvalid data written!\n")
+    finally:
+        mycontext['ThreadOn'] = False
+
+
+createthread(thread)
+createthread(thread_bad)

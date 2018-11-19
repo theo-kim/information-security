@@ -1,0 +1,21 @@
+def attempt(f, s, off):
+    try: 
+        f.writeat(s, off)
+        return True
+    except:
+        return False
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("test.txt")
+
+# Misaligned offset
+myfile = openfile("test.txt", True)
+
+# Can write to middle of 8 byte word  incorrectly
+if not attempt(myfile, "BBBBAAAAAAAABBBB", 0):
+    log("test case failed\n")
+
+if attempt(myfile, "BBBBC", 6): # should fail
+    log("test case failed\n")
+myfile.close()

@@ -1,0 +1,37 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True) 
+
+counter = []
+
+def printstuff():
+ try:
+  myfile.writeat("AAAAAAAAAA",0)
+ except:
+  pass
+ counter.pop()
+ 
+
+try:
+ counter.append(1)
+ # create thread to write ot the same file
+ createthread(printstuff)
+ myfile.writeat("BBBBB",0)
+ while len(counter) != 0:
+  pass
+
+ assert('BBBBBAAAAA' == myfile.readat(10,0))
+
+except:
+ myfile.close()
+
+else:
+ myfile.close()
+ log("Failed to write correctly\n")

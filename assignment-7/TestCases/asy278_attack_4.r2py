@@ -1,0 +1,21 @@
+# write incorrect after overflow
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBBBBB", 0)
+    assert("BBBBBBBB" == target.readat(8, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("BBBAAAAAAAB", 5)
+    if target.readat(16, 0) == "BBBBBBBBAAAAAAAB":
+        log("Invalid data written!")
+except RepyParityError:
+    pass
+
+target.close()

@@ -1,0 +1,27 @@
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+# put some valid data in the file.
+myfile.writeat("A"*8,0)
+myfile.writeat("B"*18, 6)
+
+
+# I should be able to read it out.
+assert('AAAAAABBBBBBBBBBBBBBBBBB' == myfile.readat(None,0))
+
+# this write should fail and not write anything
+try:
+  myfile.writeat("C"*17, 6)
+except RepyParityError:
+  pass
+else:
+  log("Should have gotten an error!\n")
+
+# Should still be this, nothing should be written from invalid call
+assert('AAAAAABBBBBBBBBBBBBBBBBB' == myfile.readat(None,0))
+
+#Close the file
+myfile.close()

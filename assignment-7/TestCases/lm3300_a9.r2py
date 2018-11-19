@@ -1,0 +1,57 @@
+def t1():
+  sleep(5)
+  seq = "BBBBBB"
+  offset = 1
+  try:
+    myfile.writeat(seq,offset)
+  except:
+    pass
+  else:
+    pass
+
+def t2():
+  sleep(4.9)
+  seq = "DDDDDD"
+  offset = 2
+  try:
+    myfile.writeat(seq,offset)
+  except:
+    pass
+  else:
+    pass
+
+def t3():
+  sleep(5)
+  seq = "55"
+  offset = 0
+  try:
+    myfile.writeat(seq, offset)
+  except:
+    pass
+  else:
+    pass
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)
+
+th1 = createthread(t1)
+th2 = createthread(t2)
+th3 = createthread(t3)
+
+#check the file for parity
+sleep(15)
+data = myfile.readat(None, 0)
+this_data = data
+while this_data: 
+    if len(this_data) < 8: 
+      this_data = this_data[len(this_data):]
+      break
+    eight_byte_seq = this_data[:8]
+    this_data = this_data[8:]
+    even = True
+    for this_byte in eight_byte_seq:
+        if ord(this_byte) % 2:
+            even = not even
+    if not even:
+      raise RepyParityError("Non-even parity write to file")

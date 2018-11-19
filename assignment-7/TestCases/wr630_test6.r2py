@@ -1,0 +1,14 @@
+# Valid Write Operation on non-empty file
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("ABBA",0)
+ myfile.writeat("ABBA",1)
+ # read from the file to see if the write was successful.
+ assert('ABBA' == myfile.readat(4,1))
+ # Close the file:
+ myfile.close()
+except:
+ myfile.close()
+ # Error Handle or Failure Condition
+ log("Valid data not written!")

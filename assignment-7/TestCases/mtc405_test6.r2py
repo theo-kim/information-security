@@ -1,0 +1,18 @@
+# VALID Write Operation on an file between two DIFFERENT 8 byte sequences AND writing passed
+# the end of the file 
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    # write valid data onto the file.
+    myfile.writeat("AAAAAAAA",0) #correct 
+    myfile.writeat("BBBBBBBB",4) #breaking parity between two 8 byte sequences
+    # Close the file:
+    myfile.close()
+except:
+    myfile.close() #write was prevented 
+    log("exception raised")

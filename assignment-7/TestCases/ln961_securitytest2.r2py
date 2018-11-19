@@ -1,0 +1,16 @@
+#tests appending valid data to an end of 8 byte sequence, no data leftover data to right
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+
+myfile.writeat("AABBAAA",0)
+myfile.writeat("A",7)
+
+try:
+ assert('AABBAAAA' == myfile.readat(8,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("Valid Data Not Written	")

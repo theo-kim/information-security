@@ -1,0 +1,28 @@
+# Valid even pairty check for the case when original file and data we want to write have overlap for more than one sequence.
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True) 
+
+
+try:
+  #AAAAAAAAAAAAAAAAB
+  myfile.writeat("AAAAAAAAAAAAAAAAB",0)
+  #AAAABBBBAAAABBBBC
+  myfile.writeat("BBBBAAAABBBBC",4)
+  myfile.writeat("C",16)
+except RepyParityError:
+  pass 
+
+
+
+# Read the file to check the contents
+try:
+
+ assert('AAAABBBBAAAABBBBC' == myfile.readat(17,0))
+ myfile.close()
+
+except:
+ myfile.close()
+ log("error writing to file!\n")

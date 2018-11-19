@@ -1,0 +1,16 @@
+# check if invalid is allowed
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBBBBA", 0)
+    assert("BBBBBBBA" == target.readat(8, 0))
+    log("Invalid data written!")
+except RepyParityError:
+    pass
+
+
+target.close()

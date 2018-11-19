@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# The first write should pass as it is even number of 8 byte sequence 
+#and then substituting B will give odd number of non-even bytes in the sequence
+#Thus should fail
+
+try:
+  myfile.writeat("AAAAAAAA",0)
+  myfile.writeat("B",7)
+  assert('A' == myfile.readat(1,7))
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead! \n")
+  
+#Close the file
+myfile.close()

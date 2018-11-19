@@ -1,0 +1,19 @@
+# Write valid aligned sequence to non-empty file
+# Should be allowed
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+myfile.writeat("AAAAAAAA",0)
+
+try:
+  # Write at offset 8 modifies 1 8-byte sequence
+  myfile.writeat("BBBBBBBB",8)
+  assert('AAAAAAAABBBBBBBB' == myfile.readat(16,0))
+except:
+  log("Valid data not written!\n")
+
+myfile.close()

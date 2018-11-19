@@ -1,0 +1,26 @@
+# Valid and invalid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ 	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+insert = [('ABCD',0),('ABCD',4),('BC',2),('BB',0),('abcdabcd',8),('LMNO',0),('AAAB',0),('AAAA',8),('AB',0),('DCBA',4),('BBAA',2),('CD',18),('ABCD',32),('C',3),('BB',10)]
+# write data onto the file.
+for (data, offset) in insert:
+	try:
+ 		myfile.writeat(data, offset)
+	except Exception as e:
+	 	pass
+
+try:
+ 	# read from the file to see if the write was successful.
+ 	assert('ABBBAABAAABBabcd' == myfile.readat(None,0))
+ 	# Close the file:
+ 	myfile.close()
+except:
+ 	myfile.close()
+ 	# Error Handle or Failure Condition
+ 	log("Bug 11: Multiple writes is not as expected!\n")

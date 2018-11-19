@@ -1,0 +1,31 @@
+# Test if write empty string
+
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAABBBBBBBB", 0)
+
+try:
+	myfile.writeat("", 0) 
+	assert("" == myfile.readat(0, 0))
+except:
+	log("Cannot write empty string at the beginning. \n")
+
+myfile.writeat("BBBBBBBBB", 0) 
+try:
+	assert("BBBBBBBBB" == myfile.readat(9, 0))
+except:
+	log("Cannot write normal string which should be allowed here. \n")
+
+try:
+	myfile.writeat("", 9) 
+	assert("" == myfile.readat(0, 9))
+except:
+	log("Cannot insert empty string here. \n")
+	
+myfile.close()

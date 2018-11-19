@@ -1,0 +1,17 @@
+# Write past EOF
+# Should not catch and pass SeekPastEndOfFileError
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  # Write at a large offset instead of 0
+  myfile.writeat("AA", 9999)
+except SeekPastEndOfFileError:
+  pass 
+else:
+  log("Don't suppress SeekPastEndOfFileError in your security layer\n")
+
+myfile.close()

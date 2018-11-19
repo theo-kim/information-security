@@ -1,0 +1,17 @@
+# VALID WRITES - first write end at 16, second offset at 9
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("ABABABABABABABAB",0) # VALID
+    myfile.writeat("CDEA", 9) # VALID ABABABABACDEABAB",0)
+    assert('ABABABABACDEABAB' == myfile.readat(16,0))
+    myfile.close()
+except:
+    myfile.close()
+    log("Valid data not written!")

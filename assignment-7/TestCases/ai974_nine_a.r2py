@@ -1,0 +1,17 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+#this should NOT be allowed
+try:
+  myfile.writeat("AAAAAAAAA", 0)
+  log("failed 9 A's testcase\n")
+except RepyParityError:
+  # should happen
+  pass
+except:
+  log("failed 9 A's testcase\n")
+
+#Close the file
+myfile.close()

@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+file = openfile("testfile.txt", True)
+file.writeat("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 0)
+
+#CHECKING 48BYTES COMPATIBILITY.
+try:
+	assert('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' == file.readat(41,0))
+	file.close()
+except:
+	file.close()
+	log("Valid Data to file Unsuccessful!\n")
+
+

@@ -1,0 +1,16 @@
+# Clean up of existing file
+if "mh4160-test-attack.txt" in listfiles():
+ removefile("mh4160-test-attack.txt")
+
+# Open File Function Call
+myfile=openfile("mh4160-test-attack.txt",True)  #Create a file
+
+try:
+    # write valid data onto the file.
+    myfile.writeat("AAAAAAAAA",0)
+    myfile.writeat("BBBBBB",1)
+    assert('ABBBBBBAA' == myfile.readat(None,0))
+    myfile.close()
+except:
+    myfile.close()
+    log("Invalid")

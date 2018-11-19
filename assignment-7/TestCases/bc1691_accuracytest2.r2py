@@ -1,0 +1,21 @@
+# Test case accuracy 1
+
+# Clean up of existing file
+if 'testfile.txt' in listfiles():
+  removefile('testfile.txt')
+#Open file function call
+myfile=openfile('testfile.txt',True)
+
+try:
+    myfile.writeat('AAAAAAAA',0)
+    assert('AAAAAAAA' == myfile.readat(None,0))
+    myfile.writeat('C',2)
+    assert('AACAAAAA' == myfile.readat(None,0))
+    myfile.writeat('A',8)
+    assert('AACAAAAAA' == myfile.readat(None,0))
+    myfile.writeat('CC',8)
+    assert('AACAAAAACC' == myfile.readat(None,0))
+    myfile.close()
+except:
+    myfile.close()
+    log('Accuracy bug')

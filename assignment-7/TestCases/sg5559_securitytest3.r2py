@@ -1,0 +1,36 @@
+import threading 
+import os
+
+def task1():
+	myfile.writeat("ABCDEFGHIJKLMNOPQRST", 0)
+	myfile.writeat("ABCDEFGHIJKLMNOPQRSTST", 18)
+
+def task2():
+	myfile.readat(20, 0)
+	myfile.readat(20, 18)
+
+
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+t1 = threading.Thread(target = task1, name = t1)
+t2 = threading.Thread(target = task2, name = t2)
+
+t1.start()
+t2.start() 
+try:
+ assert('ABCDEFGHIJKLMNOPQRAB' == myfile.readat(20,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ #count = count + 1
+ myfile.close()
+ log("Valid Data write to a file is unsuccessfull!")
+
+
+

@@ -1,0 +1,26 @@
+#Sabrina Supapkooha
+#sps450
+
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("HELLO",0)
+ myfile.writeat("WORLD", 5)
+ # read from the file to see if the write was successful.
+ assert('HELL' == myfile.readat(4,0))
+ assert('HELLOWORLD' == myfile.readat(10, 0))
+ 
+ # Close the file:
+ myfile.close()
+except:
+ myfile.close()
+ # Error Handle or Failure Condition
+ log("Valid data not written!")

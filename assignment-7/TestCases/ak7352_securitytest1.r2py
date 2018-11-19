@@ -1,0 +1,24 @@
+# Invalid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("AAAAAAAB",0)
+except RepyParityError:
+    pass  # should happen
+
+# Write  
+# Read the file to check the contents
+try:
+ assert('' == myfile.readat(None,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Invalid Data write to a file is successfull!")

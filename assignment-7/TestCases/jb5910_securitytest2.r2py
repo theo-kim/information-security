@@ -1,0 +1,18 @@
+# test whitespace
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("A B B B",0)
+    # read from the file to see if the write was successful.
+    assert('A B B B' == myfile.readat(7,0))
+    log("white space breaks\n")
+    # Close the file:
+    myfile.close()
+except RepyParityError:
+    myfile.close()

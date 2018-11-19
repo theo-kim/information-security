@@ -1,0 +1,27 @@
+# Valid WRITE on a non-empty file
+# Checking for sequence completion?
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+myfile.writeat("AAAAA",0)
+# Write data over existing data in the file
+myfile.writeat("B",6)
+# Sequence is now "AAAAAB" which has a total parity of 5, but
+# since it is not a complete 8 bit, the sequence has an even
+# parity. Should not catch exception.
+
+# Read the file to check the contents
+try:
+ assert('AAAAAB' == myfile.readat(8,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Valid Data write to a file is unsuccessfull!")

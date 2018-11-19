@@ -1,0 +1,22 @@
+# remove and re-create test files
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+if "testfile1.txt" in listfiles():
+    removefile("testfile1.txt")
+
+myfile=openfile("testfile.txt",True)
+myfile1=openfile("testfile1.txt",True)
+
+
+myfile.writeat("AA",0)
+myfile1.writeat("BB",0)
+
+try:
+    myfile.write(myfile1.readat(None,0),2)
+    assert('AABB' == myfile.readat(4,0))
+    myfile.close()
+except:
+    myfile.close()
+    log("data not written\n")
+    pass

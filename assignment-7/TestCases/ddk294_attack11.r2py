@@ -1,0 +1,18 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("AAAAAAAA",0)
+# makes the sequence odd parity
+myfile.writeat("B",7)
+
+try:
+ assert('AAAAAAAA' == myfile.readat(8,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Invalid data write to a file was successful!")

@@ -1,0 +1,48 @@
+# Multiple valid writes
+
+# timer incase deadlock or loop forever
+def time_out():
+    log('Running too long, deadlock or loop forever!\n')
+    exitall()
+def time_limit(pause_in_seconds, call_function):
+    def configured_timer_function():
+        sleep(pause_in_seconds)
+        call_function()
+    return configured_timer_function
+
+def run_test():
+
+
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+
+    myfile = openfile("testfile.txt", True)  # Create a file
+
+    try:
+        myfile.writeat("AAAAAAA", 0)
+        myfile.writeat("A", 7)
+        myfile.writeat("AAA", 8)
+        myfile.writeat("BBBBABBBBBBBBCC", 11)
+        myfile.writeat("DDDDDDEE", 26)
+
+        assert("AAAAAAAA" == myfile.readat(8, 0))
+        assert("AAABBBBA" == myfile.readat(8, 8))
+        assert("BBBBBBBB" == myfile.readat(8, 16))
+        assert("CCDDDDDD" == myfile.readat(8, 24))
+        assert("EE" == myfile.readat(2, 32))
+
+    except RepyParityError:
+        log("Valid Data blocked as non-even!\n")
+    except (CodeUnsafeError, NameError) as e:
+        log("Code error found. {}\n".format(e.args[-1]))
+    except:
+        log("Valid Data write to a file is unsuccessfull!\n")
+    finally:
+        myfile.close()
+    exitall()
+
+        
+if callfunc == "initialize":
+    configured_function = time_limit(5, time_out)
+    createthread(configured_function)
+    run_test()

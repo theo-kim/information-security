@@ -1,0 +1,16 @@
+# Write at -1 
+# Should not catch and pass RepyArgumentError
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  myfile.writeat("BC", -1)
+except RepyArgumentError:
+  pass # Repy handle this 
+else:
+  log("Don't suppress RepyArgumentError in your security layer\n")
+
+myfile.close()

@@ -1,0 +1,28 @@
+######################################################################################################
+# Test case 6:  check INvalid data write on a non-empty file, should NOT allow
+######################################################################################################
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+#Create a parity test file
+myfile=openfile("testfile.txt",True)
+
+try:
+    # Write valid data to the file
+    myfile.writeat("AAAAAA",0)
+except:
+    myfile.close()
+    log("Test 6 failed! Valid data not written on empty file!\n")
+
+try:
+    # Write INvalid data to the file
+    myfile.writeat("BBBCCCC",5)
+    assert('AAAAABBBCCCC' == myfile.readat(12,0))
+except:
+    # successful raise a exception
+    myfile.close()
+else:
+    myfile.close()
+    log("Test 6 failed! INvalid data write on non-empty file!\n")

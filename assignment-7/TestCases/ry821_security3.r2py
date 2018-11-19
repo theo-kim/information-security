@@ -1,0 +1,16 @@
+# Security Test 3
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+try:
+	myfile.writeat("ABA", 0)
+	myfile.writeat("ABABABA", 1)
+except RepyParityError:
+	pass
+else:
+	log("Security Bug 3\n")
+
+myfile.close()

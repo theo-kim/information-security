@@ -1,0 +1,15 @@
+#testing for inaccurate inputs
+
+if "inaccuracytest.txt" in listfiles():
+ removefile("inaccuracytest.txt")
+
+myfile=openfile("inaccuracytest.txt",True)  
+
+try:
+ myfile.writeat("BCCB",2)
+except RepyParityError:
+ myfile.close()
+ pass
+else:
+ myfile.close()
+ log("Invalid input accepted")

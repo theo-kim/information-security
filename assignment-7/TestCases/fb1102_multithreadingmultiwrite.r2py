@@ -1,0 +1,84 @@
+def timeout():
+  sleep(10)
+  log("Timeout due to deadlock or inefficient monitor.\n")
+  exitall()
+  
+def dotest1():
+  if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+  myfile=openfile("testfile.txt",True)
+  
+  myfile.writeat("AA",0)
+  assert('AA' == myfile.readat(None,0))
+
+  try:
+    myfile.writeat("AABCBCBC",0)
+  except RepyParityError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+    
+  myfile.writeat("AAAAAAAAAAAAAAAAA",0)
+
+  myfile.writeat("AAAAAB",17)
+
+  try:
+    myfile.writeat("A",23)
+  except RepyParityError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+
+  myfile.writeat("BA",23)
+
+  try:
+    myfile.writeat("A",26)
+  except SeekPastEndOfFileError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+
+  myfile.close()
+  exitall()
+
+def dotest2():
+  if "testfile2.txt" in listfiles():
+    removefile("testfile2.txt")
+  myfile=openfile("testfile2.txt",True)
+
+  myfile.writeat("AA",0)
+  assert('AA' == myfile.readat(None,0))
+
+  try:
+    myfile.writeat("AABCBCBC",0)
+  except RepyParityError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+    
+  myfile.writeat("AAAAAAAAAAAAAAAAA",0)
+
+  myfile.writeat("AAAAAB",17)
+
+  try:
+    myfile.writeat("A",23)
+  except RepyParityError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+
+  myfile.writeat("BA",23)
+
+  try:
+    myfile.writeat("A",26)
+  except SeekPastEndOfFileError:
+    pass
+  else:
+    log("should have been an error instead!\n")
+
+  myfile.close()
+  exitall()
+
+createthread(timeout)
+createthread(dotest1)
+createthread(dotest2)

@@ -1,0 +1,25 @@
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+data='abcdefgh'
+
+
+try:
+    myfile.writeat(data,15)
+except SeekPastEndOfFileError:
+    pass
+except:
+    log("Got error that isn't SeekPastEndOfFileError. Reference monitor throwing incorrect error!\n")
+else:
+    log("Should have gotten an error\n")
+
+try:
+  assert(''==myfile.readat(None,0))
+except:
+  log("assertion error!\n")
+#Close the file
+myfile.close()

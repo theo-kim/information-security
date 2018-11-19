@@ -1,0 +1,25 @@
+# jwg327  Testcase 1 I will try to open a file twice and try 2 write to it:
+if "testfile.txt" in listfile():
+    removefile("testfile.txt")
+else:
+	myfile=openfile("testfile.txt",True)  #builds a file
+	myfile2=open("testfile.txt",True)# builds second file
+
+
+try:
+    myfile.writeat("BOOM",0)
+	myfile2.writeat("Ka",0)
+	assert('BOOM'== myfile.readat(4,1))
+	assert('Ka'== myfile2.readat(2,0))
+	myfile.close()
+	myfile2.close()
+
+except IOError:
+	myfile.close()
+	myfile2.close()
+	log("Nothing was written")
+
+
+	
+		
+	

@@ -1,0 +1,17 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+#this should be allowed
+try:
+  myfile.writeat("AAAAAAAAAAAAAAAA", 0)
+except RepyParityError:
+  # should happen
+  pass
+
+except:
+  log("failed inserting more than 8 character\n")
+
+#Close the file
+myfile.close()

@@ -1,0 +1,22 @@
+# write valid data to multiple files
+
+# Clean up of existing file
+files = ['testfile1.txt','testfile2.txt','testfile3.txt','testfile4.txt','testfile5.txt']
+for file in files:
+	if file in listfiles():
+ 		removefile(file)
+
+for file in files:
+	myfile=openfile(file,True)  #Create a file
+	try:
+		myfile.writeat("ABABABAB",0)
+	except:
+		pass
+
+	try:
+		assert('ABABABAB' == myfile.readat(8,0))
+		myfile.close()
+	except:
+		myfile.close()
+		log("Accuracy bug 10: valid data is not successfully written to multiple files!\n")
+		break

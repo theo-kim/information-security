@@ -1,0 +1,14 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+file = openfile("testfile.txt", True)
+file.writeat("ABCDEFGHIJKLMNO", 0)
+file.writeat("ZZZZZZZZ", 4)
+file.writeat("Y", 0)
+
+try:
+	assert('ZZZZMNO' == file.readat(8,4))
+	file.close()
+except:
+	log("Invalid Data Written to file!\n")
+	file.close()

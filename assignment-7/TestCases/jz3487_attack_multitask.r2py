@@ -1,0 +1,43 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "tf1.txt" in listfiles():
+ removefile("tf1.txt")
+if "tf2.txt" in listfiles():
+ removefile("tf2.txt")
+if "tf3.txt" in listfiles():
+ removefile("tf3.txt")
+
+
+# Open File Function Call
+mf1=openfile("tf1.txt",True) 
+mf2=openfile("tf2.txt",True) 
+mf3=openfile("tf3.txt",True)  
+f=(mf1,mf2,mf3)#Create a file
+s=("aaaaaaaa","abbbbaaa","abbaaa","aaaaaaaa")
+a=("aaaaaaaa","abbbbaaa","abbaaaaa","aaaaaaaa")
+i=0
+for mf in f:
+  i=0
+  for data in s:
+    try:
+     mf.writeat(data,0)
+     assert(a[i] == mf.readat(None,0))
+    except:
+     log("Valid data not written!")
+    i=i+1
+s_=("abaaaaaa","abbbaaa","ab")
+for mf in f:
+  j=0
+  for data in s_:
+    try:
+      try:
+        mf.writeat(data,j)
+        assert(a[2]==mf.readat(None,0))
+      except RepyParityError:
+        pass
+    except:
+      log("writeat not working well")
+    j=j+1
+
+

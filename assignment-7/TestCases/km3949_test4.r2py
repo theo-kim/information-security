@@ -1,0 +1,16 @@
+def attempt(f, s, off):
+    try: 
+        f.writeat(s, off)
+        return True
+    except:
+        return False
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("test.txt")
+
+# Misaligned offset
+myfile = openfile("test.txt", True)
+if attempt(myfile, "BABBAAAAAAAABBBB", 0):  # should fail
+    log("Test case failed")
+myfile.close()

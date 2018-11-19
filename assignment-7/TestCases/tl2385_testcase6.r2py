@@ -1,0 +1,25 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("YYYYYYYYZZZZZZZZ", 0)
+try:
+	assert('YYYYYYYYZZZZZZZZ' == myfile.readat(16,0))
+except:
+	log("Valid data not written! \n")
+
+myfile.writeat("ZZZZZZZZ", 0)
+try:
+	assert('ZZZZZZZZ' == myfile.readat(8,0))
+except:
+	log("Valid data not written! \n")
+
+myfile.writeat("WWWW", 8)
+try:
+	 assert('WWWW' == myfile.readat(4, 8))
+except:
+	log("Valid data not written! \n")
+
+myfile.close()

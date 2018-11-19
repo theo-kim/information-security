@@ -1,0 +1,25 @@
+# Test writing mix of upper and lower case letters and numbers
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  # Write initial sequence to file
+  myfile.writeat("abcd",0)
+  # Write data over existing data in the file
+  myfile.writeat('D',1)
+
+  # Write some numbers
+  myfile.writeat('123',4)
+  # Read the file to check the contents
+  assert('aDcd123' == myfile.readat(7,0))
+
+  #Close the file
+  myfile.close()
+except:
+  #Close the file
+  myfile.close()
+
+  log("Lower case and numbers not handled correctly")

@@ -1,0 +1,26 @@
+#test to see if correct re-write of data is allowed
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("ABBBBBBACCCCDDDDA",0)
+except:
+	log("Accuracy error. writeat('ABBBBBBACCCCDDDDA',0) on empty file not allowed\n")
+
+try:
+	myfile.writeat("ABBBBBBB",4)
+except:
+	log("Accuracy error. writeat('ABBBBBBB',4); Blocks: ABBBABBB BBBBDDDD A should have been allowed\n")
+
+
+try:
+	assert("ABBBABBBBBBBDDDDA" == myfile.readat(None,0))
+	myfile.close()
+except AssertionError:
+	log("Accuracy error. Valid write not allowed\n")
+	myfile.close()
+
+

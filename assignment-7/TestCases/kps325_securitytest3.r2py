@@ -1,0 +1,34 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+if "testfile2.txt" in listfiles():
+  removefile("testfile2.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+my2file=openfile("testfile2.txt",True)
+my3file=openfile("testfile3.txt",True)
+
+# Write valid data to the file
+myfile.writeat("AAAAAAA",0)
+my2file.writeat("AAB",3)
+my3file.writeat("ABB",1)
+# Write data over existing data in the file
+myfile.writeat("A",7)
+
+# Read the file to check the contents
+try:
+ assert('AAAAAAAA' == myfile.readat(8,0))
+ #Close the file
+ myfile.close()
+ my2file.close()
+ my3file.close()
+except:
+ #Close the file
+ myfile.close()
+ my2file.close()
+ my3file.close()
+ log("Valid Data write to a file is unsuccessfull!")

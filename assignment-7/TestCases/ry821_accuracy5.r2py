@@ -1,0 +1,35 @@
+# Accuracy Test 5/6
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+if "testfile2.txt" in listfiles():
+	removefile("testfile2.txt")
+
+myfile = openfile("testfile.txt", True)
+
+myfile2 = openfile("testfile2.txt", True)
+
+myfile.writeat("ABABABABBBBBAAAABABABABA", 0)
+myfile2.writeat("BABABA", 0)
+myfile.writeat("AAAA", 8)
+myfile2.writeat("B", 6)
+myfile2.writeat("A", 7)
+myfile2.writeat("BAAA", 8)
+myfile2.writeat("A", 12)
+myfile2.writeat("ABA", 13)
+myfile2.writeat("AAA", 2)
+
+try:
+	assert("ABABABABAAAAAAAABABABABA" == myfile.readat(24, 0))
+except:
+	log("Accuracy Bug 5\n")
+
+myfile.close()
+
+try:
+	assert("BAAAAABABAAAAABA" == myfile2.readat(16, 0))
+except:
+	log("Accuracy Bug 6\n")
+
+myfile2.close()

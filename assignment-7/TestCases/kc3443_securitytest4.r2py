@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+myfile.writeat("AAAAAAACC",0)
+
+# I should be able to read it out.
+assert('AAAAAAACC' == myfile.readat(None,0))
+
+try:
+  myfile.writeat("B",7)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!")

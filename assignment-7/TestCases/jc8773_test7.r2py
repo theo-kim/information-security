@@ -1,0 +1,38 @@
+# Valid WRITE on a non-empty file
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+
+
+try:
+  try:
+    myfile.writeat("AAAA",-1)
+  except RepyParityError:
+    pass
+except:
+  pass
+# Read the file to check the contents
+try:
+  assert("" == myfile.readat(None, 0))
+except:
+  log("  Invalid index write to a file is successfull!7\n")
+
+
+try:
+  try:
+    myfile.writeat("AAAA",2)
+  except RepyParityError:
+    pass
+except:
+  pass
+# Read the file to check the contents
+try:
+  assert("" == myfile.readat(None, 0))
+  myfile.close()
+except:
+  myfile.close()
+  log("  Invalid index write to a file is successfull!7\n")

@@ -1,0 +1,16 @@
+# Correctness issue: Some students did not correctly implement the parity calculation.
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)  # Create a parity file
+
+myfile.writeat("QQ", 0)
+
+# Causes the following monitors to incorrectly throw RepyParityErrors:
+# reference_monitor_al4596.r2py
+# reference_monitor_bk1613.r2py
+# reference_monitor_dga264.r2py
+
+# Close the file
+myfile.close()

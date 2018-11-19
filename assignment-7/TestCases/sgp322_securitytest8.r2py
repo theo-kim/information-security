@@ -1,0 +1,18 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+	myfile.writeat("27", 0)
+	myfile.writeat("40", 2)
+	myfile.writeat("21", 4)
+	myfile.writeat("21", 6)
+except:
+	pass
+finally:
+	if ('27402121' == myfile.readat(8,0)):
+		log("Invalid data written!")
+	 	
+
+ 

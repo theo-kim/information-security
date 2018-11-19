@@ -1,0 +1,20 @@
+# Multiple Write Operation on the Same File
+
+# Clean up of existing files
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+	# Write data onto the file multiple times
+	myfile.writeat("LLOF", 0)
+	myfile.writeat("CXZ1", 2)
+	myfile.writeat("a8xaa", 1)
+	myfile.writeat("000000k", 3) 
+	#Close the file:
+	myfile.close()
+except:
+	myfile.close()
+	log("Does not handle multiple write operations on the same file)

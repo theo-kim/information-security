@@ -1,0 +1,20 @@
+# check if valid data raises exception when completing previous block
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBBBA", 0)
+    assert("BBBBBBA" == target.readat(7, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("ABBBBBBB", 7)
+    assert(target.readat(15, 0) == "BBBBBBAABBBBBBB")
+except RepyParityError:
+    log("Valid data not written!")
+
+target.close()

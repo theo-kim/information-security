@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)  # Create a parity file
+
+# put some valid data in the file.
+try:
+    myfile.writeat("AAAAAAAA", 0)
+    myfile.writeat("BBBBBBBB",8)
+    assert("AAAAAAAABBBBBBBB" == myfile.readat(None, 0))
+except:
+    myfile.close()
+    log("Error: Previous data LOST")
+
+
+

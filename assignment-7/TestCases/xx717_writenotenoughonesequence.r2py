@@ -1,0 +1,37 @@
+# Test if write all valid values but not enough one sequence
+
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAABBBBBBBB", 0)
+
+myfile.writeat("C", 0) 
+try:
+	assert('C' == myfile.readat(1, 0))
+except:
+	log("Cannot write String \"C\" here. \n")
+
+myfile.writeat("CCCC", 0) 
+try:
+	assert('CCCC' == myfile.readat(4, 0)) 
+except:
+	log("Cannot write String \"CCCC\" here. \n")
+
+myfile.writeat("CCCCCCC", 0) 
+try:
+	assert('CCCCCCC' == myfile.readat(7, 0))
+except:
+	log("Cannot write String \"CCCCCCC\" here. \n")
+
+myfile.writeat("KKT", 8)
+try:
+	assert('KKT' == myfile.readat(3, 8))
+except:
+	log("Cannot insert String \"KKT\" since its length is < 8. \n")
+
+myfile.close()

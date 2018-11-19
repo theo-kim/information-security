@@ -1,0 +1,23 @@
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+if "testfile2.txt" in listfiles():
+  removefile("testfile2.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+myfile2=openfile("testfile2.txt",True)
+
+
+myfile.writeat('A'*24, 0)
+assert("AAAAAAAAAAAAAAAAAAAAAAAA"==myfile.readat(None,0))
+myfile2.writeat('A'*18, 0)
+assert('AAAAAAAAAAAAAAAAAA'==myfile2.readat(None,0))#'AAAAAAAA AAAAAAAA AA'
+myfile2.writeat('C'*3, 18)
+assert('AAAAAAAAAAAAAAAAAACCC'==myfile2.readat(None,0)) #'AAAAAAAA AAAAAAAA AACCC'
+
+
+
+
+myfile.close()

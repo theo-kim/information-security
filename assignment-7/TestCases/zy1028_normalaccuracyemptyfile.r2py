@@ -1,0 +1,27 @@
+# Valid Write Operation on an empty file
+def runtoolong():
+    log('dead lock or dead loop!!\n')
+    exitall()
+def timer(seconds, callfunction):
+    def timerfunction():
+        sleep(seconds)
+        callfunction()
+    return timerfunction
+def testcase():
+  if "testfile.txt" in listfiles():
+   removefile("testfile.txt")
+  myfile=openfile("testfile.txt",True)  #Create a file
+
+  try:
+   myfile.writeat("ABCD",0)
+   assert('ABCD' == myfile.readat(4,0))
+   myfile.close()
+  except:
+   myfile.close()
+   log("Valid data not written on an empty file!\n")
+  exitall()
+  
+if callfunc == "initialize":
+  function = timer(8, runtoolong)
+  createthread(function)
+  testcase()

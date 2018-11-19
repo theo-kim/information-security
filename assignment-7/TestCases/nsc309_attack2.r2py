@@ -1,0 +1,20 @@
+# add input that should not be added
+
+# this write should fail...
+try:
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+
+	# put some valid data in the empty file.
+	myfile.writeat("ABBBBBBB",0)
+
+	# I should be able to read it out.
+	assert('ABBBBBBB' == myfile.readat(None,0))
+
+	#Close the file
+	myfile.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

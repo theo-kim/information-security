@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+
+# put some valid data in the file.
+myfile.writeat("AA",0)
+
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+  pass
+
+try:
+  assert('AABCBCBC' == myfile.readat(8,0))
+  log("Invalid data was written\n")
+  myfile.close()
+except:
+  myfile.close()

@@ -1,0 +1,38 @@
+#bg1813 attack 2, try to write multiple times in same attack, with invalid data the second and third time
+#Also trying to write to same 8byte
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+	myfile=openfile("testfile.txt",True)  #Create a file on first write
+# Open it again
+	myfile2=openfile("textfile.txt",True)
+# open it a third time
+	myfile3=openfile("textfile.txt", true)
+
+
+	try:
+	 # write invalid data onto the file.
+		myfile.writeat("AAAAAAAA",8)
+		
+		
+	try:
+	 # write invalid data onto the file and bad offset.
+		myfile2.writeat("kkkeeee",8)
+		
+	 # log if i was able to write to the file
+		log("Was able to write invalid data)
+
+	try:
+	 # write invalid data onto the file and bad offset.
+		myfile3.writeat("kkkeeee",8)
+		
+	 # log if i was able to write to the file
+		log("Was able to write invalid data)
+ 
+ # close all instances of open file
+	myfile.close()
+	myfile2.close()
+	myfile3.close()

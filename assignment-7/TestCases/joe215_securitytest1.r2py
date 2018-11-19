@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+   removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+toWrite = "B"*96
+myfile.writeat(toWrite, 0)
+myfile.close()
+
+try:
+	myfile = openfile("testfile.txt", True)
+	myfile.writeat("AAA", 0) #first sequence is AAABBBBB which should be invalid!
+
+except RepyParityError:
+	pass
+
+else:
+	log("should have been error!")
+	
+myfile.close()

@@ -1,0 +1,16 @@
+# give data that's not a string (an int)
+
+# this write should fail...
+try:
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+
+	myfile.writeat(1,0)
+  
+	#Close the file
+	myfile.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

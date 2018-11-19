@@ -1,0 +1,19 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+
+myfile.writeat("AAAAAABB",0)
+myfile.writeat("B",0)
+try:
+
+    assert('BAAAAABB' == myfile.readat(8,0))
+    
+except:
+    log("Invalid data written")
+    myfile.close()
+else:
+    myfile.close()
+
+

@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+data = "A" * 7 + "B"
+
+try:
+    myfile.writeat(data, 0)
+except:
+    pass
+else:
+    log("Test failed!")
+
+myfile.close()

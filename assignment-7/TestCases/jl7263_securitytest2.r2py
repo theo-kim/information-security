@@ -1,0 +1,32 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the 2nd 8-byte sequence
+myfile.writeat("ZYZYZYZY",0)
+myfile.writeat("ZYZYZYZY",8)
+# valid write to first 8-byte sequence
+myfile.writeat("A",1)
+myfile.writeat("AA",7)
+
+# " A     AAYZYZYZY"
+
+#should not work because resulting 2nd 8-byte sequence is odd
+
+
+# Read the file to check the contents
+try:
+  #read first 16 bytes from index 0
+ assert('ZYZYZYZY' == myfile.readat(8,8))
+ #Close the file
+ myfile.close()
+ log("security vulnerability!")
+except:
+ #Close the file
+ myfile.close()
+ log("Valid Data write to a file is unsuccessfull!")

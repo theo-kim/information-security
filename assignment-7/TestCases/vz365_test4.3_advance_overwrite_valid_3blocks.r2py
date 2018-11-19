@@ -1,0 +1,34 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+myFile=openfile("testfile.txt",True) #create new testfile
+goodSoFar = True
+
+try: #write valid data (i.e. 20 B's)
+ myFile.writeat("BBBBBBBBBBBBBBBBBBBB",0)
+except: #parity error even if there shouldn't be
+ ###log("parity error for writing even parity\n")
+ myFile.close()
+ goodSoFar = False
+else:
+ #log("parity check is fine part 1")
+ pass
+
+#we have a file with Bx20
+#now try to modify index 6-18 to make (block1,block2,block3) = (valid,valid,valid)
+
+if (goodSoFar):
+ try:
+  myFile.writeat("AABBBBBBBBA", 6) #this shouldn't trigger parity error
+  #log(" write successful in part 2")
+
+ except: #parity error shouldn't occur
+  #myFile.close()
+  log("pairty occured but shoulnd't for 3-block valid edit(false positive)\n")
+ else: #parity error didn't occur, correct
+  #log("parity check success\n")
+  myFile.close()
+

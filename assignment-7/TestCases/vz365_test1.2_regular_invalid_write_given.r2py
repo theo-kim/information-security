@@ -1,0 +1,21 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+ # attempt to write invalid data onto the file.
+ myfile.writeat("ABAA",0)
+
+except: #parityerror should occur
+ myfile.close()
+ #log("regular write works fine\n")
+else: #no parityerror when there should be one
+ myfile.close()
+ #log("failed to block invalid write\n")
+ log("regular invalid right (paritycheck false negative)\n")
+ 

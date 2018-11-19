@@ -1,0 +1,23 @@
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+
+try:
+   myfile.writeat("ABCDAEAABB",0)
+   myfile.writeat("ABC",2)
+except RepyParityError:
+  pass  # should happen
+
+# Read the file to check the contents
+try:
+ assert('ABABCEAABB' == myfile.readat(None,0))
+ #Close the file
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ log("Valid Data write to a file is unsuccessfull!")

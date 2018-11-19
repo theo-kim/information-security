@@ -1,0 +1,25 @@
+# Check parity of upper case, number sequence
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  # Write valid data to the file
+  myfile.writeat("AAAA",0)
+  # Write data over existing data in the file
+  myfile.writeat("2222",4)
+
+  # Read the file to check the contents
+  assert('AAAA2222' == myfile.readat(8,0))
+
+  #Close the file
+  myfile.close()
+except:
+  #Close the file
+  myfile.close()
+
+  log("Valid data write of upper case letters and numbers to a file was unsuccessfull!")

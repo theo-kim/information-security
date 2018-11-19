@@ -1,0 +1,33 @@
+########
+# Hello World\n
+# Hello World\n1111
+# Hello Worl1\n\n211 -> Error
+########
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+offset = 0
+
+seq = "Hello World\n" #e, o, W, o |rld is fine|
+myfile.writeat(seq,offset)
+assert(seq == myfile.readat(len(seq),offset))
+offset += len(seq)
+
+seq = "1111"
+myfile.writeat(seq, offset)
+assert(seq == myfile.readat(len(seq),offset))
+offset += len(seq)
+
+seq = "1\n\n2"
+try:
+  myfile.writeat(seq, 10)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+answer = "Hello World\n1111"
+assert(answer == myfile.readat(len(answer), 0))
+
+myfile.close()

@@ -1,0 +1,21 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+myfile.writeat("AAAAAAAAAAAAAAAA",0)
+assert('AAAAAAAAAAAAAAAA' == myfile.readat(None,0))
+
+try:
+  myfile.writeat("BBBBB",6)
+
+except:
+  pass
+
+try:
+  assert('AAAAABBBBBAAAAAA' == myfile.readat(None,0))
+
+else:
+  log("should have been an error instead!")
+
+myfile.close()

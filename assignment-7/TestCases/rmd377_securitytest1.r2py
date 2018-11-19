@@ -1,0 +1,27 @@
+# test basic writing and parity checking
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("D",0) # test of basic functionality
+except:
+	log("Accuracy error. writeat('D',0) on empty file not allowed\n")
+
+try:
+	myfile.writeat("DDDDDDD",1) #test to see if writes complete block
+except: 
+	log("Accuracy error. Block of DDDDDDDD not allowed\n")
+	
+try:
+	assert("DDDDDDDD" == myfile.readat(None,0))
+	myfile.close()
+except AssertionError:
+	log("Accuracy error. Valid write not allowed\n")
+	myfile.close()
+
+
+
+

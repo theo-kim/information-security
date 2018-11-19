@@ -1,0 +1,15 @@
+# Write valid incomplete odd sequence to empty file
+# Should be allowed
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  myfile.writeat("AAA",0)
+  assert('AAA' == myfile.readat(3,0))
+except:  
+  log("Valid data not written!\n")
+
+myfile.close()

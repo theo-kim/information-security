@@ -1,0 +1,17 @@
+# Invalid Write Operation on empty file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+myfile.writeat("BBBBBBBB",0)
+# put some invalid data in the file.
+try:
+  myfile.writeat("AA",7)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!")
+
+#Close the file
+myfile.close()

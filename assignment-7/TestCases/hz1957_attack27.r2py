@@ -1,0 +1,18 @@
+# 10 bytes
+# no modify exist data:
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+myfile.writeat("AAAAAA", 0)
+
+# add some bytes invalid data
+try:
+    myfile.writeat("AABBBBAABC", 6)
+    myfile.close()
+except:
+    pass  # should happen
+    myfile.close()
+else:
+    log("27Parity test failed\n")

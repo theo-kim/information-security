@@ -1,0 +1,39 @@
+# Valid Write Operation on an empty file
+
+# timer incase deadlock or loop forever
+def time_out():
+    log('Running too long, deadlock or loop forever!\n')
+    exitall()
+def time_limit(pause_in_seconds, call_function):
+    def configured_timer_function():
+        sleep(pause_in_seconds)
+        call_function()
+    return configured_timer_function
+
+def run_test():
+    # Clean up of existing file
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+
+    # Open File Function Call
+    myfile = openfile("testfile.txt", True)  # Create a file
+
+    try:
+        # write valid data onto the file.
+        myfile.writeat("ABBA", 0)
+        # read from the file to see if the write was successful.
+        assert('ABBA' == myfile.readat(4, 0))
+        # Close the file:
+        myfile.close()
+    except (CodeUnsafeError, NameError) as e:
+        log("Code error found. {}\n".format(e.args[-1]))
+    except:
+        myfile.close()
+        # Error Handle or Failure Condition
+        log("Valid data not written!\n")
+    exitall()
+
+if callfunc == "initialize":
+    configured_function = time_limit(5, time_out)
+    createthread(configured_function)
+    run_test()

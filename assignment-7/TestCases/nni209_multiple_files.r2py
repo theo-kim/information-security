@@ -1,0 +1,38 @@
+# Valid Write Operation on multiple files
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+if "testfile2.txt" in listfiles():
+ removefile("testfile2.txt")
+if "testfile3.txt" in listfiles():
+ removefile("testfile3.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Open another file
+anotherFile = openfile("testfile2.txt",True)
+
+#Open a third file
+thirdFile = openfile("testfile3.txt",True)
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("ABBA",0)
+ anotherFile.writeat("ABBA",0)
+ thirdFile.writeat("ABBA",0)
+ # read from the file to see if the write was successful.
+ assert('ABBA' == myfile.readat(4,0))
+ assert('ABBA' == anotherFile.readat(4,0))
+ assert('ABBA' == thirdFile.readat(4,0))
+ # Close the file:
+ myfile.close()
+ anotherFile.close()
+ thirdFile.close()
+except:
+ myfile.close()
+ anotherFile.close()
+ thirdFile.close()
+ # Error Handle or Failure Condition
+ log("Valid data not written!")

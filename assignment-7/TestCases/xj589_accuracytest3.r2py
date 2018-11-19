@@ -1,0 +1,23 @@
+# Valid even pairty check for the case when the file has less than 16 bytes, but more than 8 bytes.
+# This is to make sure for second sequence, security layer will not check for that part.
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True) 
+
+
+try:
+  myfile.writeat("AAAABBBBABC",0)
+except RepyParityError:
+  pass 
+
+
+# Read the file to check the contents
+try:
+
+ assert('AAAABBBBABC' == myfile.readat(11,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("error writing to file!\n")

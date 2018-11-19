@@ -1,0 +1,21 @@
+# basic two block check
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBBBBBBBBBBBBB", 0)
+    assert("BBBBBBBBBBBBBBBB" == target.readat(16, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("AA", 7)
+    if target.readat(16, 0) == "BBBBBBBAABBBBBBB":
+        log("Invalid data written!")
+except RepyParityError:
+    pass
+
+target.close()

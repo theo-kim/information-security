@@ -1,0 +1,34 @@
+def runtoolong():
+    log('dead lock or dead loop!!\n')
+    exitall()
+def timer(seconds, callfunction):
+    def timerfunction():
+        sleep(seconds)
+        callfunction()
+    return timerfunction
+
+
+def testcase():
+  if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+  myfile=openfile("testfile.txt",True)  #Create a parity file
+  try:
+    myfile.writeat("AA",0)
+    assert('AA' == myfile.readat(None,0))
+    myfile.writeat("BCBCBC",2)
+
+  except AssertionError:
+    log("first valid write wrong\n")
+  except RepyParityError:
+    pass
+  except :
+    log("should be an RepyParityError\n")
+  else:
+    log("should be an error for invalid write\n")
+  myfile.close()
+  exitall()
+
+if callfunc == "initialize":
+  function = timer(8, runtoolong)
+  createthread(function)
+  testcase()

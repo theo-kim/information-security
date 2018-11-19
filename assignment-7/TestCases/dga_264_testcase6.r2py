@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True) #create file
+
+try:
+	myfile.writeat("AA", 0)
+	myfile.close()
+
+	myfile = openfile("testfile.txt", False) #open the same file
+	myfile.writeat("BB", 1) #parity broken
+
+	# assert("ABB" == myfile.readat(3, 0)), "parity is broken"
+except RepyParityError:
+	myfile.close()
+	pass
+else:
+	log("problem detected\n")
+
+

@@ -1,0 +1,57 @@
+#two thread both write
+
+
+testid = 2590
+testfilename1 = "test_thread1_"+ str(testid) + ".txt"
+
+
+def ThreadOne():
+    if testfilename1 in listfiles():
+      removefile(testfilename1)
+
+    myfile=openfile(testfilename1,True)  #Create a parity file
+    # put some valid data in the file.
+    myfile.writeat("BBBBBBBBBBBBBBB",0)
+
+    # However, this write should not fail...
+    try:
+      myfile.writeat("DDDDDD",12)
+    except RepyParityError:
+        log("Valid Data write to a file is unsuccessfull!")
+    #Close the file
+    myfile.close()
+
+
+def ThreadTwo():
+    myfile=openfile(testfilename1,True)  #Create a parity file
+    # put some valid data in the file.
+    try:
+        myfile.writeat("AA",2)
+        myfile.writeat("EEEEEE",12)
+    except RepyParityError:
+        log("Valid Data write to a file is unsuccessfull!")
+    #Close the file
+    myfile.close()
+
+def ThreadThree():
+    myfile=openfile(testfilename1,True)  #Create a parity file
+    # put some valid data in the file.
+    try:
+        myfile.writeat("CC",5)
+        myfile.writeat("RRRRRR",12)
+    except RepyParityError:
+        log("Valid Data write to a file is unsuccessfull!")
+    #Close the file
+    myfile.close()
+
+createthread(ThreadOne)
+sleep(1)
+createthread(ThreadTwo)
+sleep(1)
+createthread(ThreadThree)
+
+
+
+
+
+

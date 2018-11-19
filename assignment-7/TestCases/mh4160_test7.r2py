@@ -1,0 +1,22 @@
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  
+
+try:
+    # write valid data onto the file.
+    myfile.writeat("AAAAAAAAAAAAAAAA",0) 
+    myfile.writeat("BB",7) 
+    log("Invalid")
+    # Close the file:
+    myfile.close()
+except RepyParityError:
+    myfile.close()
+    pass
+except:
+    myfile.close()
+    log("Wrong Exception")
+
+ 

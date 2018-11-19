@@ -1,0 +1,49 @@
+# Valid WRITE on a non-empty file
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+data = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+try:
+  try:
+    myfile.writeat(data,0)
+  except RepyParityError:
+    log("  false RepyParityError")
+except:
+  log("  illegal Error")
+# Read the file to check the contents
+try:
+  assert(data == myfile.readat(len(data),0))
+except:
+  log("  Valid Data write to a file is unsuccessfull!6\n")
+
+try:
+  try:
+    myfile.writeat("",2)
+  except RepyParityError:
+    pass
+except:
+  pass
+# Read the file to check the contents
+try:
+  assert("B" == myfile.readat(1,2))
+except:
+  log("  Empty Data write to a file leads to different result6\n")
+
+try:
+  try:
+    myfile.writeat("AAAA",7)
+  except RepyParityError:
+    pass
+except:
+  log("  illegal Error")
+# Read the file to check the contents
+try:
+  assert("BBBB" == myfile.readat(4,7))
+  myfile.close()
+except:
+  myfile.close()
+  log("  Invalid Data write to a file is successfull!6\n")

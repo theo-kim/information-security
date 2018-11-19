@@ -1,0 +1,20 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+myfile.writeat("AA",0)
+
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+   pass
+
+try:
+  myfile.writeat("BCBCBC",2)
+except RepyParityError:
+   pass
+else:
+   log("Error! Uneven parity written in! [Multiple Write]")
+
+#Close the file
+myfile.close()

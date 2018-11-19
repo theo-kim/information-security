@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+  # put some valid data in the file.
+  myfile.writeat("AAAAAAAACCC",0)
+
+  # I should be able to read it out.
+  assert('AAAAAAAACCC' == myfile.readat(None,0))
+except:
+  #Close the file
+  myfile.close()
+  log("Valid Data write to a file is unsuccessfull!")

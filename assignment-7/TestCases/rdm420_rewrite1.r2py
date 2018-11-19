@@ -1,0 +1,22 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+data = "A" * 8 + "B" * 8 + "C" * 8 + "D" * 8 + "E" * \
+    8 + "F" * 8 + "G" * 8 + "H" * 8 + "I" * 8 + "J" * 8
+
+try:
+    myfile.writeat(data, 0)
+except:
+    log("Test failed!")
+
+if data != myfile.readat(None, 0):
+    log("Test failed!")
+
+try:
+    myfile.writeat("YYGGYY", 34)
+except RepyParityError:
+    log("Test failed!")
+
+myfile.close()

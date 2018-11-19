@@ -1,0 +1,25 @@
+# Negative Offset
+# Student: mm7277
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  # Write valid data with negative offset
+  myfile.writeat("testing123",-2);
+
+# Error Handle or Failure Condition
+except RepyArgumentError:
+  log("Negative offset - Accuracy bug")
+
+except ValueError:
+  pass
+else:
+  log("Negative offset - Accuracy bug")
+
+#Close the file
+myfile.close()

@@ -1,0 +1,21 @@
+######################################################################################################
+# Test case 1:  check valid data write and read on empty file, should allow
+######################################################################################################
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+#Create a parity test file
+myfile=openfile("testfile.txt",True)
+
+# put some valid data in the file.
+try:
+    # write valid data onto the file.
+    myfile.writeat("ABBA",0)
+    # read from the file to see if the write was successful.
+    assert('ABBA' == myfile.readat(4,0))
+    myfile.close()
+except:
+    myfile.close()
+    log("Test 1 failed! Valid data not written!\n")

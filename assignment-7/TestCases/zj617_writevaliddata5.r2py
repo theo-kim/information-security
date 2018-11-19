@@ -1,0 +1,15 @@
+# Valid Write Operation on Non-empty file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+myfile.writeat("AAAAAAAA",0)
+myfile.writeat("BB",2)
+# put some valid data in the file.
+try:
+  assert('AABBAAAA' == myfile.readat(8,0))
+  myfile.close()
+except:
+  myfile.close()
+  log("Valid data write into a file is unsuccessfull!")

@@ -1,0 +1,21 @@
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+# this data is valid because it's not a full 8 bytes
+myfile.writeat("A"*7,0)
+
+# I should be able to read it out.
+assert('AAAAAAA' == myfile.readat(None,0))
+
+# this is still valid because still not reaching the 8 byte (letter) minimum
+try:
+  myfile.writeat("C", 1)
+except RepyParityError:
+  log('should not be an error\n')
+
+
+
+#Close the file
+myfile.close()

@@ -1,0 +1,22 @@
+# INVALID Write Operation on an file between two DIFFERENT 8 byte sequences 
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    # write valid data onto the file.
+    myfile.writeat("AAAAAAAAAAAAAAAA",0) #correct 
+    myfile.writeat("BB",7) #breaking parity between two 8 byte sequences
+    log("Parity breaking data written!")
+    # Close the file:
+    myfile.close()
+except RepyParityError:
+    myfile.close() 
+    pass
+except:
+    myfile.close()
+    log("exception raised")

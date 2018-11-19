@@ -1,0 +1,32 @@
+# python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+
+# TEST CASE 3 : OPEN MULTIPLE FILES & WRITE
+# Travis Wheelwright - tjw389
+
+# This Test Succeeded Against "reference_monitor_al4596.r2py"
+
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+    
+if "testfile2.txt" in listfiles():
+    removefile("testfile2.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+myfile2 = openfile("testfile2.txt",True)  #Creates a 2nd file
+
+try:
+	myfile.writeat("ABBA",0)
+	#read from the file to see if the write was successful.
+	assert('ABBA' == myfile.readat(4,0))
+	myfile2.writeat("spotruns",4)
+	# Close the file:
+	myfile.close()
+	log("ATTACK SUCCESSFUL!\n")
+
+except:
+    myfile2.close()
+    # Error Handle or Failure Condition
+    # log("DATA NOT WRITTEN\n")

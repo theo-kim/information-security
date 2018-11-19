@@ -1,0 +1,13 @@
+testfile="testfile"
+if testfile in listfiles():
+    removefile(testfile)
+
+f = openfile(testfile, True)
+
+try:
+    f.writeat("AAAA", 0)
+    assert("AAAA" == f.readat(4, 0))
+    f.close()
+except:
+    f.close()
+    log("Valid data could not be written\n")

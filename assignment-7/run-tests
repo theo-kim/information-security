@@ -1,0 +1,65 @@
+#!/bin/bash
+BREAKS=0
+i=1
+sp="/-\|"
+numfiles=(TestCases/*.r2py)
+numfiles=${#numfiles[@]}
+wrong=0
+
+echo " " > "output.txt"; 
+
+echo "Preparing files"
+
+for referencemonitor in ReferenceMonitors/reference_*;
+	do cp $referencemonitor ../assignment-5/runnable;
+	done;
+
+cd TestCases
+for testcase in *.r2py;
+	do cp -- "$testcase" "../../assignment-5/runnable/parity_test_$testcase";
+	done;
+
+cd ../../assignment-5/runnable;
+
+if [ ! -f ../../assignment-7/input.txt ] || [ "$1" != "file" ]; then
+    echo "Running all $numfiles test cases";
+    for referencemonitor in reference_*; do 
+		for testcase in parity_test_*.r2py; do 
+			out=$(python2.7 repy.py restrictions.default encasementlib.r2py $referencemonitor $testcase 2>&1);
+			if [[ $out ]]; then 
+				echo "$testcase" >> "../../assignment-7/output.txt";
+				((wrong++));
+			fi;
+			printf "\r\033[K${sp:i++%${#sp}:1} Testing ($i / $numfiles): $referencemonitor ($testcase)"
+			done;
+		done;
+elif [ -f ../../assignment-7/input.txt ] && [ "$1" = "file" ]; then
+	filename="../../assignment-7/input.txt";
+	echo "Reading from $filename"
+	numfiles=$(wc -l < "$filename")
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+    	if [ -f "$line" ]; then
+    		for referencemonitor in reference_*; do
+	    		out=$(python2.7 repy.py restrictions.default encasementlib.r2py $referencemonitor $line 2>&1);
+				if [[ $out ]]; then 
+					echo "$line" >> "../../assignment-7/output.txt";
+					((wrong++));
+				fi;
+			done;
+			printf "\r\033[K${sp:i++%${#sp}:1} Testing ($i / $numfiles): $referencemonitor ($line)"
+    	fi;
+	done < "$filename"
+fi;
+
+printf "\nFailures: $wrong / $numfiles\n"
+
+for referencemonitor in reference_*;
+	do rm $referencemonitor;
+	done;
+
+for testcase in parity_test_*.r2py;
+	do rm $testcase;
+	done;
+
+
+

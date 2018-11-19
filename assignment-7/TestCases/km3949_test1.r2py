@@ -1,0 +1,7 @@
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("test.txt")
+
+# Can your program even open a file?
+# An upsetting amount of projects fail this.
+myfile = openfile("test.txt", True)

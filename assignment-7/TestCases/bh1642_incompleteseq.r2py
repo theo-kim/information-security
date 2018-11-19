@@ -1,0 +1,13 @@
+testfile="testfile"
+if testfile in listfiles():
+    removefile(testfile)
+
+f = openfile(testfile, True)
+
+try:
+    f.writeat("AAAAAAAABAB", 0)
+    assert("AAAAAAAABAB" == f.readat(11, 0))
+    f.close()
+except:
+    f.close()
+    log("Did not properly write bytes with more than eight bytes\n")

@@ -1,0 +1,17 @@
+# Write Operation on negative value offset 
+
+# Clean up of existing files
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+	# Write data onto a negative offset
+	myfile.writeat("sdvv", -1) 
+	#Close the file:
+	myfile.close()
+except:
+	myfile.close()
+	log("Does not handle negative values in write operation")

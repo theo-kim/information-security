@@ -1,0 +1,16 @@
+# 10 bytes
+# no modify exist data:
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+# add some bytes valid data
+try:
+    myfile.writeat("ABABBCBAAA", 0)
+    assert ('ABABBCBAAA' == myfile.readat(None, 0))
+    myfile.close()
+except:
+    myfile.close()
+    log("23Valid data not written!\n")

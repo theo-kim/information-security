@@ -1,0 +1,39 @@
+def runtoolong():
+    log('dead lock or dead loop!!\n')
+    exitall()
+def timer(seconds, callfunction):
+    def timerfunction():
+        sleep(seconds)
+        callfunction()
+    return timerfunction
+
+
+def testcase():
+  if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+  myfile=openfile("testfile.txt",True)  
+
+  try:
+   myfile.writeat("ABCBABABCCC",0)
+   myfile.writeat("DEDEDEDAB",1)
+   assert('ADEDEDEDABC' == myfile.readat(None,0))
+   #Close the file
+   myfile.close()
+   try:
+    myfile2=openfile("testfile.txt",False)
+    myfile2.writeat("FBCBCBCBC",7)
+    assert('ADEDEDEFBCBCBCBC' == myfile2.readat(None,0))
+    myfile2.close()
+   except:
+    myfile2.close()
+    log("Valid WRITE on the middle of a non-empty file after reopen it fail\n")
+  except:
+   myfile.close()
+   log("Valid write at middle doesn't work\n")
+  exitall()
+
+if callfunc == "initialize":
+  function = timer(8, runtoolong)
+  createthread(function)
+  testcase()

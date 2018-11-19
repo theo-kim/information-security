@@ -1,0 +1,39 @@
+# Valid WRITE on the middle of multiple non-empty files 
+def runtoolong():
+    log('dead lock or dead loop!!\n')
+    exitall()
+def timer(seconds, callfunction):
+    def timerfunction():
+        sleep(seconds)
+        callfunction()
+    return timerfunction
+def testcase():
+  if "testfile1.txt" in listfiles():
+    removefile("testfile1.txt")
+  if "testfile2.txt" in listfiles():
+    removefile("testfile2.txt")
+
+  myfile1=openfile("testfile1.txt",True)  
+  myfile2=openfile("testfile2.txt",True)  
+
+
+
+  try:
+    myfile1.writeat("ABCBABABCCC",0)
+    myfile1.writeat("DEDEDEDAB",1)
+
+    myfile2.writeat("CDCDCDCDEEE",0)
+    myfile2.writeat("DEDEDEDAD",1)
+    assert('ADEDEDEDABC' == myfile1.readat(None,0))
+    assert('CDEDEDEDADE' == myfile2.readat(None,0))
+    myfile1.close()
+    myfile2.close()
+  except:
+    myfile1.close()
+    myfile2.close()
+    log("Valid data not written on the middle of multiple non-empty files\n")
+  exitall()
+if callfunc == "initialize":
+  function = timer(8, runtoolong)
+  createthread(function)
+  testcase()

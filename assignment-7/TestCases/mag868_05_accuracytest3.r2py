@@ -1,0 +1,41 @@
+
+# Clean up old file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile = openfile("testfile.txt",True)
+
+# 5 prerequisite: File already contains two 8-byte sequences with parity
+case_txt = "5 prerequisite: File already contains two 8-byte sequences with parity \n"
+try:
+    myfile.writeat("AAAAAABBABCABCBB", 0)
+    assert("AAAAAABBABCABCBB" == myfile.readat(None,0))
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Caught RepyParityError when the write is supposed to be valid \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not properly write to file as it was supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but was not supposed to result in error \n")
+
+
+# 5. Valid write: Finish off with < 8 bytes containing no parity
+case_txt = "5. Valid write: Finish off with < 8 bytes containing no parity \n"
+try:
+    myfile.writeat("AAA", 16)
+    assert("AAA" == myfile.readat(None, 16))
+except RepyParityError:
+    log("Case: " + case_txt)
+    log("Error: Caught RepyParityError when the write is supposed to be valid \n")
+except AssertionError:
+    log("Case: " + case_txt)
+    log("Error: Did not properly write to file as it was supposed to \n")
+except:
+    log("Case: " + case_txt)
+    log("Error: Caught some error, but was not supposed to result in error \n")
+
+
+#Close the file
+myfile.close()

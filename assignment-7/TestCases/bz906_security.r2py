@@ -1,0 +1,58 @@
+'''
+Bohan Zhang - Security Test
+Testing: Writing even parity data to empty and non-empty files, 
+should be able to write.
+And Writing non-even partiy data but never exceed 8-bytes, should be able to write too
+'''
+
+# delete existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# create a file
+myfile = openfile("testfile.txt", True)
+
+# not 8-byte but even sequence write from the start
+try:
+    myfile.writeat("ABBABBB",0)
+except:
+    pass    
+else:
+    log("Valid data (7 bytes) not written!\n")
+
+# not 8-byte but even and non-letter sequence write from the start
+try:
+    myfile.writeat("!?",0)  # ! and ? are both odd, ord(!) is 33, ord(?) is 63
+except:
+    pass    
+else:
+    log("Valid data (2 bytes) not written!\n")
+
+# not 8-byte and non-even sequence write from the start
+try:
+    myfile.writeat("AAAACCC",0)
+except:
+    pass    
+else:
+    log("Valid data (7 bytes and not even) not written!\n")
+
+# not 8-byte and non-even sequence write from the offset
+try:
+    myfile.writeat("AAAABBBB",0)
+    myfile.writeat("AAAB",8)
+except:
+    pass    
+else:
+    log("Valid data(append 4 bytes from valid 8 bytes data) not written!\n")
+
+# not 8-byte and even sequence write from the offset
+try:
+    myfile.writeat("AAAABBBB",0)
+    myfile.writeat("AABB",8)
+except:
+    pass    
+else:
+    log("Valid data(append 4 bytes from valid 8 bytes data) not written!\n")
+
+# When run past all cases
+myfile.close()

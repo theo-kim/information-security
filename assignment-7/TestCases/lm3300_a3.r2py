@@ -1,0 +1,24 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+offset = 0
+
+seq = "AAAAAAAAAA"
+myfile.writeat(seq,offset)
+assert(seq == myfile.readat(len(seq),offset))
+
+offset += len(seq)
+
+seq = "CCCCCCCC"
+myfile.writeat(seq,1)
+assert(seq == myfile.readat(len(seq),1))
+
+seq = "BCBCBB"
+myfile.writeat(seq,2)
+  
+answer = "ACBCBCBBCA"
+assert(answer == myfile.readat(len(answer), 0))
+
+#Close the file
+myfile.close()

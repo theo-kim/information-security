@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)  # Create a parity file
+
+# put some valid data in the file.
+try:
+    myfile.writeat("CC", -1)
+
+except:
+    myfile.close()
+    log("Error: Negative Offset not Handled!!!")
+
+
+    

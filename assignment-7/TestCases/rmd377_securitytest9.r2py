@@ -1,0 +1,24 @@
+#test if illegal write possible with "legal" 8 byte sequence added
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("AAAA",0)
+except:
+	pass
+
+try:
+	myfile.writeat("AAABBBBA",4)
+except:
+	pass
+
+
+if myfile.readat(8,0) == "AAAAAAAB":
+	log("Security error. 'AAAAAAAB' written to location 0-7\n")
+
+myfile.close()
+
+

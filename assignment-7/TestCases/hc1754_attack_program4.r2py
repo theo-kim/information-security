@@ -1,0 +1,25 @@
+# Writing sequence of bytes over multiple byte sequences
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  # Write valid data to the file
+  myfile.writeat("ABCDEFGHIJKLMNOPQRSTUVWX",0)
+  # Write data over existing data in the file
+  myfile.writeat("ABCDEFGHIJKL",6)
+
+  # Read the file to check the contents
+  assert('ABCDEFABCDEFGHIJKLSTUVWX' == myfile.readat(24,0))
+
+  #Close the file
+  myfile.close()
+except:
+  #Close the file
+  myfile.close()
+
+  log("Valid Data write over multiple byte sequence to a file was unsuccessfull!")

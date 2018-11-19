@@ -1,0 +1,12 @@
+# test to see if File with upper case was allowed
+
+try:
+	myfile=fileopen("TEXTFILE.txt",True)
+
+except IOError:
+	pass 
+
+else:
+	log("I was allowed to create an UPPERCASE FILE")
+
+	

@@ -1,0 +1,14 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+myfile.writeat("AA",0)
+assert('AA' == myfile.readat(None,0))
+
+try:
+  myfile.writeat("BCBCCCA",2)
+except:
+  log("valid data should be written")
+  
+#Close the file
+myfile.close()

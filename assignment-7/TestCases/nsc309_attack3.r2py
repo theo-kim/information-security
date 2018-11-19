@@ -1,0 +1,10 @@
+# try to open a file with wrong text name
+
+try:
+	myfile=openfile("Testfile.txt",True)  #Create a parity file
+
+	#Close the file
+	myfile.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

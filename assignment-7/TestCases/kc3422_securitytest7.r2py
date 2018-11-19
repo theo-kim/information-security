@@ -1,0 +1,11 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+  myfile.writeat("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBA",7)
+except:
+  #Close the file
+  myfile.close()
+  log("Valid data not written!")

@@ -1,0 +1,19 @@
+# less than 8 bytes
+# modify exist data:
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+myfile.writeat("AAAA",0)
+
+# AAAA in file
+# add some bytes valid data
+try:
+    myfile.writeat("BC", 1)
+    assert ('ABCA' == myfile.readat(None, 0))
+    myfile.close()
+except:
+    myfile.close()
+    log("8Valid data not written!\n")

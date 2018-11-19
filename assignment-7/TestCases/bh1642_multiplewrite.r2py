@@ -1,0 +1,15 @@
+testfile="testfile"
+if testfile in listfiles():
+    removefile(testfile)
+
+f = openfile(testfile, True)
+
+try:
+    f.writeat("ABABABAB", 0)
+    assert("ABABABAB" == f.readat(8, 0))
+    f.writeat("BABAB", 3)
+    assert("ABABABAB" == f.readat(8, 0))
+    f.close()
+except:
+    f.close()
+    log("Could not write same offset data twice\n")

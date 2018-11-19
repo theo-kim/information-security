@@ -1,0 +1,44 @@
+# Invalid offset value WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Read the file to check the contents
+try:
+ # Write valid data to the file
+ myfile.writeat('AAA',0)
+ # Write data over existing data in the file
+ myfile.writeat("BCBCBCBC",60)
+except:
+ try:
+  assert('AAA' == myfile.readat(3,0))
+ except:
+  #Close the file
+  myfile.close()
+  log('This read should have been valid')
+ else:
+  pass
+else:
+ try:
+  assert('AAA' == myfile.readat(3,0))
+ except:
+  #Close the file
+  myfile.close()
+  log('This read should have been valid')
+ else:
+  try:
+   assert(myfile.readat(1,3).length() == 1)
+   #Close the file
+   myfile.close()
+  except:
+   #Close the file
+   myfile.close()
+   pass
+  else:
+   #Close the file
+   myfile.close()
+   log('This read should have been valid')

@@ -1,0 +1,24 @@
+# Valid even pairty check for the case when the file has 8 bytes.
+
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True) 
+
+
+try:
+  myfile.writeat("AAAABBBB",0)
+except RepyParityError:
+  pass 
+
+
+
+# Read the file to check the contents
+try:
+
+ assert('AAAABBBB' == myfile.readat(8,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("error writing to file!\n")

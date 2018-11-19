@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+myfile.writeat("AAAAAAA",0)
+myfile.writeat("B",3)
+myfile.close()
+
+myfile=openfile("testfile.txt",True)
+
+try:
+    assert('AAABAAA' == myfile.readat(None,0))
+    myfile.close()
+except:
+    log("valid data didnt print\n")
+    myfile.close()

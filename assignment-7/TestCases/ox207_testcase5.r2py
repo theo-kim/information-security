@@ -1,0 +1,25 @@
+# Invalid WRITE Operation on a file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data onto the file.
+myfile.writeat("DDDDDDEE",0)
+# Write data over existing data in the file
+myfile.writeat("E",0)
+
+# Read the file to check the contents
+try:
+    # read from the file to see if the write was successful.
+    assert('EDDDDDEE' == myfile.readat(8,0))
+except:
+    # Error Handle or Failure Condition
+    log("Invalid Parity data is written.")
+    myfile.close()
+else:
+    # Close the file:
+    myfile.close()

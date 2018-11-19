@@ -1,0 +1,53 @@
+########
+# 12345678
+#     123456 -> Allowed
+# 1234123456
+# 1234123457 -> Allowed
+# 1234123457122222 -> ERROR
+# 123412345711111 -> Allowed
+########
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+offset = 0
+
+seq = "12345678"
+myfile.writeat(seq,offset)
+assert(seq == myfile.readat(len(seq),offset))
+offset += len(seq)
+
+seq = "123456"
+myfile.writeat(seq,4)
+assert(seq == myfile.readat(len(seq),4))
+
+seq = "7"
+myfile.writeat(seq, 9)
+assert(seq == myfile.readat(len(seq), 9))
+
+seq = "122222"
+
+try:
+  myfile.writeat(seq,10)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+seq = "11111"
+
+myfile.writeat(seq, 10)
+assert(seq == myfile.readat(len(seq), 10))
+
+seq = "0123456689"
+try:
+  myfile.writeat(seq,0)
+except RepyParityError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+answer = "123412345711111"
+assert(answer == myfile.readat(len(answer), 0))
+
+myfile.close()

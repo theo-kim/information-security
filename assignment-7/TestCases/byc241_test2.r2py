@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  
+myfile.writeat("BBBBBBBBBBBBBBBB",0)
+
+try:
+   myfile.writeat("BCBBBBC",5)
+   assert('BCBBBBC' == myfile.readat(7,5))
+except RepyParityError:
+   pass
+else:
+   log("Error! Uneven bytes written in [Even write causing 2 odd parity]")
+myfile.close()
+

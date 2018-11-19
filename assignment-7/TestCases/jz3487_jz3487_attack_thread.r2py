@@ -1,0 +1,67 @@
+
+def wr1():
+  try:
+    mycontext['file'].writeat("bb",1)
+  except:
+    pass
+  mycontext['count']= mycontext['count']+1
+
+def wr2():
+  try:
+    mycontext['file'].writeat("bb",2)
+  except:
+    pass
+  mycontext['count']=mycontext['count']+1
+
+def timer():
+  if mycontext['endtime']==1:
+    exit()
+  sleep(1)
+  mycontext['flag']=2
+def ender():
+  sleep(5)
+  exitall()
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+mycontext['file']=openfile("testfile.txt",True)
+mycontext['file'].writeat("aaaaaaaa",0)
+mycontext['flag']=0
+#createthread(timer)
+createthread(ender)
+while True:
+  mycontext['count']=0
+  createthread(wr1)
+  createthread(wr2)
+  i=1000000
+  while i:
+    i=i-1
+    if mycontext['count']==2:
+      break
+  if i ==0:
+    mycontext['flag']=3
+    break
+  output = mycontext['file'].readat(None,0)
+  if output == 'abbbaaaa':
+    mycontext['flag']=1
+    
+  if mycontext['flag']>0:
+    break
+  sleep(0.01)
+output = mycontext['file'].readat(None,0)
+if mycontext['flag']==1:
+  if output=="abbbaaaa":
+    log("Invalid data written\n")
+if mycontext['flag']==3:
+  if output == "aaaaaaaa" or output=="aaaaaaaa":
+    log("Valid data not written,or maybe dead loop : writeat() time out\n")
+  if output == "abbbaaaa":
+    log("Invalid data written\n")
+  else:
+    log("writeat() time out, dead loop maybe\n")
+output=mycontext['file'].readat(None,0)
+try:
+  mycontext['file'].close()
+except:
+  lof("fail to close() file")
+exitall()

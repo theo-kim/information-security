@@ -1,0 +1,15 @@
+# Write valid incomplete even sequence to empty file
+# Should be allowed
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  myfile.writeat("AAAA",0)
+  assert('AAAA' == myfile.readat(4,0))
+except:
+  log("Valid data not written!\n")
+
+myfile.close()

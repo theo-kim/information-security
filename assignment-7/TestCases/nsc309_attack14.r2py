@@ -1,0 +1,20 @@
+# readat function passed an offset of 10
+
+# this write should fail...
+try:
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+
+	# put some valid data in the file.
+	myfile.writeat("AAAAAAAA",0)
+
+	# I should be able to read it out.
+	assert('AAAAAAAA' == myfile.readat(None,10))
+
+	#Close the file
+	myfile.close()
+except:
+	log("Write unsuccessful.\n")
+	pass  # should happen

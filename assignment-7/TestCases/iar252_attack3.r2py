@@ -1,0 +1,28 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+myfile2=myfile
+myfile3=myfile2
+myfile4=myfile3
+
+
+myfile.writeat("AAAAAAA",0)
+myfile2.writeat("ABA",0)
+myfile3.writeat("B",2)
+myfile4.writeat("A",7)
+
+try:
+ assert('ABBAAAAA' == myfile.readat(8,0))
+ myfile.close()
+except:
+ #Close the file
+ myfile.close()
+ myfile.close()
+ myfile2.close()
+ myfile3.close()
+ myfile4.close()
+ log("Valid Data write to a file is unsuccessfull!")
+
+

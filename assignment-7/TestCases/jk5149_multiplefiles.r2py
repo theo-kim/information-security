@@ -1,0 +1,28 @@
+#write multiple files
+
+if "mutiple1.txt" in listfiles():
+ removefile("multiple1.txt")
+if "mutiple2.txt" in listfiles():
+ removefile("multiple2.txt")
+if "mutiple3.txt" in listfiles():
+ removefile("multiple3.txt")
+
+myfile1=openfile("multiple1.txt",True)  #Create a file
+myfile2=openfile("multiple2.txt",True)  #Create a file
+myfile3=openfile("multiple3.txt",True)  #Create a file
+
+try:
+ myfile1.writeat("ABBA", 0)
+ myfile2.writeat("ABBA", 0)
+ myfile3.writeat("ABBA", 0)
+ assert('ABBA' == myfile1.readat(4,0))
+ assert('ABBA' == myfile2.readat(4,0))
+ assert('ABBA' == myfile3.readat(4,0))
+ myfile1.close()
+ myfile2.close()
+ myfile3.close()
+except:
+ myfile1.close()
+ myfile2.close()
+ myfile3.close()
+ log("Multiple writes don't work!")

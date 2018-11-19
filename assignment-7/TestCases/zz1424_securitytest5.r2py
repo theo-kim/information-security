@@ -1,0 +1,27 @@
+#zz1424 / N12323212
+#TEST CASE 5
+
+#ACCURACY/EFFICIENCY/SECURITY
+#This test case writes a valid sequence with an incomplete end sequence.
+
+def main():
+    #Remove and create testfile
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+
+    try:
+        myfile.writeat("ABABABBA", 0)
+        myfile.writeat("BBBBBBBB", 8)
+        myfile.writeat("AABABBABAAAABBBB", 16)
+        myfile.writeat("CCC", 32) #Should be valid
+        myfile.writeat("CBBBB", 35) #Should be valid
+        myfile.writeat("ABABABABCCCCC", 40) #Also should be valid
+        assert("ABABABBABBBBBBBBAABABBABAAAABBBBCCCCBBBBABABABABCCCCC" == myfile.readat(None, 0))
+        myfile.close()
+    except:
+        myfile.close()
+        log("5: Valid write was unsuccessful!\n")
+
+if callfunc == "initialize":
+    main()

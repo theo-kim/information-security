@@ -1,0 +1,43 @@
+# Valid Write Operation on an empty file
+
+#log("start check: ")
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+#keep track to see if we can move on to part 2
+goodSoFar = True
+
+try:
+ # write valid data onto the file.
+ myfile.writeat("ABBA",0) #this should work
+ # read from the file to see if the write was successful.
+ assert('ABBA' == myfile.readat(4,0))
+
+except: #AssertionError as error:
+ myfile.close()
+ goodSoFar = False
+
+ # Error Handle or Failure Condition
+ ##log("Valid data not written!\n") #checked in other test cases
+else: #ABBA is there
+ myfile.close()
+ #log("part1 good;")
+
+if (goodSoFar):
+ myfile=openfile("testfile.txt",False) #open file again to try adding something bad
+
+ #log("part 2 try;")
+
+ try:
+  myfile.writeat("AABB",4) #this data is valid
+  assert("ABBAAABB" == myfile.readat(8,0))
+ except: #assertion failed, valid data is not written
+  myfile.close()
+  log("write appending twice failed to happen (parity check false negative)\n")
+ else: #valid data written
+  myfile.close()
+  #log("part 2 success\n")

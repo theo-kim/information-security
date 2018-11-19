@@ -1,0 +1,17 @@
+# Valid Write Operation on a non-empty file before the EOF
+
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# put some valid data in the file.
+myfile.writeat("AADDDD",0)
+
+myfile.writeat("BCBCBC",4)
+
+assert('AADDBCBCBC' == myfile.readat(None,0))
+
+#Close the file
+myfile.close()
+

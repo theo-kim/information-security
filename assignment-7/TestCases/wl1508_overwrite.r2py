@@ -1,0 +1,20 @@
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAAAAAAAAAA", 0)
+
+try:
+    assert(myfile.readat(None, 0) == "AAAAAAAAAAAAAAAA")
+except:
+    log("should have written something\n")
+
+try:
+    myfile.writeat("BBB", 6)
+except:
+    pass
+else:
+  log("should have been an error instead!\n")

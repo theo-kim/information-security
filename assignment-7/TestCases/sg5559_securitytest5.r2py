@@ -1,0 +1,15 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+n
+yfile=openfile("testfile.txt",True)  #Create a parity file
+try:
+	myfile.writeat("ABCDEFGHIJKLMNOPQRST",-1234567)
+
+except RepyArgumentError:
+	pass
+	#log("Error should have been handled")
+except RepyParityError:
+	pass
+	#log("Error Should have been handled")
+else:
+	log("Exception handling should have been handled here")	  

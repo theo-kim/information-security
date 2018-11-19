@@ -1,0 +1,28 @@
+# Invalid Write Operation with offset out of range on a non-empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+ 	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+ 	# write valid data onto the file.
+ 	myfile.writeat("ABCD",0)
+ 	# write invalid data, index out of range
+ 	myfile.writeat("AB", 6)
+ 	myfile.writeat("AB", 8)
+ 	myfile.writeat("AB", 16)
+except:
+	pass
+
+try:
+	# Read the file to check the contents
+	assert('ABCD' == myfile.readat(None,0))
+ 	# Close the file:
+ 	myfile.close()
+except:
+ 	myfile.close()
+ 	# Error Handle or Failure Condition
+ 	log("Accuracy bug 4: Invalid data index out of range write to a file is successful!\n")

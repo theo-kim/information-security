@@ -1,0 +1,12 @@
+# This is an empty testcase triggering any python files that are syntactically invalid.
+
+# hits:
+# reference_monitor_avj242.r2py
+# reference_monitor_byc241.r2py
+# reference_monitor_jwg327.r2py
+# reference_monitor_mm7277.r2py
+# reference_monitor_nmn267.r2py
+# reference_monitor_sjd445.r2py
+# reference_monitor_sps450.r2py
+# reference_monitor_tjw389.r2py
+# reference_monitor_vr714.r2py

@@ -1,0 +1,17 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+file = openfile("testfile.txt", True)
+
+try:
+	file.writeat("fashdvhiasdvbasiuvbasibfierubvarbfvlsdbaskjdvbdsbaskbcisdbvkjasdbauiw", 0)
+	file.writeat("fashdvhiasdvbasiuvbasibfierubvarbfvlsdbaskjdvbdsbaskbcisdbvkjasdbauiw", 15)
+	file.writeat("fashdvhiasdvbasiuvbasibfierubvarbfvlsdbaskjdvbdsbaskbcisdbvkjasdbauiw", 0)
+	file.writeat("fashdvhiasdvbasiuvbasibfierubvarbfvlsdbaskjdvbdsbaskbcisdbvkjasdbauiw", 14)
+	assert("f"== file.readat(1,0))
+	file.close()
+except:
+	file.close()
+	log("Invalid Data to file!\n")
+
+

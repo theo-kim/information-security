@@ -1,0 +1,35 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+myfile.writeat("BCBCBCBC",0)
+#another 8 byte sequence, no interference
+myfile.writeat("ADADADAD",8)
+# Write data over existing data in the file
+# char x is even parity
+myfile.writeat("x",6)
+#BCBCBCxCADADADAD
+#still good
+# add an all even seq
+#BCBCBxXxXDADADAD
+#should not work
+myfile.writeat("xXxX",5)
+
+
+# Read the file to check the contents
+try:
+  #read first 16 bytes from index 0
+ assert('BCBCBxXxXDADADAD' == myfile.readat(16,0))
+ #Close the file
+ myfile.close()
+ log("security vulnerability!")
+except:
+ #Close the file
+ myfile.close()
+ #log("Valid Data write to a file is unsuccessfull!")

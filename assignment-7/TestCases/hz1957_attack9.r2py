@@ -1,0 +1,20 @@
+# less than 8 bytes
+# modify exist data:
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+myfile.writeat("AAAAAAAA",0)
+
+# AAAAAAAA in file
+# add some bytes invalid data
+try:
+    myfile.writeat("BC", 1)
+    myfile.close()
+except :
+    pass  # should happen
+    myfile.close()
+else:
+    log("9Parity test failed\n")

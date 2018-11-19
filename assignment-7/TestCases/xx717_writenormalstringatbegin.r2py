@@ -1,0 +1,29 @@
+# Test what happens insert valid values at every beginning of each sequence
+
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAABBBBBBBBB", 0)
+try:
+	assert('AAAAAAAABBBBBBBB' == myfile.readat(16,0))
+except:
+	log("Valid Data write to a file is unsuccessfull! \n")
+
+myfile.writeat("BBBBBBBB", 0)
+try:
+	assert('BBBBBBBB' == myfile.readat(8,0))
+except:
+	log("Cannot write String \"BBBBBBBB\" which should be valid here. \n")
+
+myfile.writeat("DDDD", 8)
+try:
+	 assert('DDDD' == myfile.readat(4, 8))
+except:
+	log("Cannot insert String \"DDDD\" which should be valid here. \n")
+
+myfile.close()

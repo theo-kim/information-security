@@ -1,0 +1,24 @@
+#Check integrity of previously written data from the user
+
+# Clean up of existing file
+if "testfile.txt.a" in listfiles():
+	removefile("testfile.txt.a")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)
+
+# Write data onto file
+myfile.writeat("ZtestZ",0)
+
+myfile.close()
+
+myfile=openfile("testfile.txt",True)
+
+try:
+	# Check the contents of the file
+	assert('ZtestZ' == myfile.readat(None,0))
+	# Close the file
+	myfile.close()
+except:
+	myfile.close()
+	log("Does not maintain previously written data")

@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+# However, this write should pass and should not throw any exception...
+#less than 8 byte so print it
+#even number of non-even bytes in the sequence
+#should produce no errors
+
+myfile.writeat("AA",0)
+assert('AA' == myfile.readat(2,0))
+
+  
+#Close the file
+myfile.close()

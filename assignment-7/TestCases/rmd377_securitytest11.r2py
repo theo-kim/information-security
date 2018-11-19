@@ -1,0 +1,54 @@
+'''
+test if illegal write possible by opening file twice. Remove cases that fail simpler checks
+'''
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("BABBBAAB",0) #test if illegal write is possible outright
+except:
+	pass
+
+#identify cases that fail simple tests
+if myfile.readat(8,0) == "BABBAABB":
+	log("Security error. 'BABBAABB' written to location 0-7\n")
+	myfile.close()
+else: # only use cases that do not outright allow illegal writes
+	try:
+		myfile.writeat("AABBAABB",0)
+	except:
+		pass
+	
+	#identify monitors that fail to perform a legal write
+	if myfile.readat(8,0) != "AABBAABB":
+		log("Accuracy error. Valid write  writeat('AABBAABB',0) not allowed\n")
+		myfile.close()
+	else:
+		try:
+			myfile.writeat("B",0)
+		except:
+			pass
+			
+		#remove monitors that allowed simple illegal rewrite above
+		if myfile.readat(8,0) == "BABBAABB":
+			log("Security error. 'BABBAABB' written to location 0-7\n")
+			myfile.close()
+		else: #have now isolated monitors that would not allow writeat("B", 0) on previous attempt
+			myfile.close()
+			secondtry = openfile("testfile.txt",True)  #Reopen file to repeat write
+			try:
+				secondtry.writeat("B", 0)
+			except:
+				pass
+
+			if secondtry.readat(8,0) == "BABBAABB":
+				log("Security error. 'BABBAABB' written to location 0-7 through use of two file handles to same file\n")
+
+			secondtry.close()
+
+
+
+

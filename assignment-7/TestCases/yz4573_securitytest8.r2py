@@ -1,0 +1,19 @@
+######################################################################################################
+# Test case 8:  INvalid offset on empty file, should NOT allow
+######################################################################################################
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+#Create a parity test file
+myfile=openfile("testfile.txt",True)
+
+try:
+    # Write valid data on INvalid offset
+    myfile.writeat("AAAAAA",4)
+    assert('AAAAAA' == myfile.readat(6,0))
+except:
+    pass
+else:
+    log("Test 8 failed! INvalid offset written on empty file!\n")

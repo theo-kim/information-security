@@ -1,0 +1,20 @@
+#thread testing again, but with inaccurate inputs this time
+
+if "threadtest2.txt" in listfiles():
+ removefile("threadtest2.txt")
+
+myfile=openfile("threadtest2.txt",True)  
+
+try:
+ createthread(myfile.writeat("BCCB",2))
+ createthread(myfile.writeat("BCCB",2))
+ createthread(myfile.writeat("BCCB",2))
+ createthread(myfile.writeat("BCCB",2))
+ createthread(myfile.writeat("BCCB",2))
+ createthread(myfile.writeat("BCCB",2))
+except RepyParityError:
+ myfile.close()
+ pass
+else:
+ myfile.close()
+ log("Invalid input accepted when using threads")

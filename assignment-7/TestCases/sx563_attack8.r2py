@@ -1,0 +1,27 @@
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+#Test two threads write to same file
+def thread_one():
+	try:
+		file_one = openfile("testfile.txt", True) 
+		file_one.writeat("AA", 0)
+	except Exception:
+		log("failed to write in thread_one\n")
+	finally:
+		file_one.close()
+  
+def thread_two():
+	try:
+		file_two = openfile("testfile.txt", True)
+		file_two.writeat("AA", 0)
+	except Exception:
+		log("failed to write in thread_two\n")
+	finally:
+		file_two.close()		
+
+
+createthread(thread_one)
+sleep(1)
+createthread(thread_two)
+sleep(1)

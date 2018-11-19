@@ -1,0 +1,16 @@
+# VALID WRITES - series of writes
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+    myfile.writeat("SAWDGVCBKJHG",0) # VALID
+    myfile.writeat("CGEJSDKUGRNSDSFA", 6) # VALID 
+    myfile.close()
+except:
+    myfile.close()
+    log("Valid data not written!")

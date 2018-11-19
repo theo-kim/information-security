@@ -1,0 +1,22 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)  # Create a parity file
+
+# put some valid data in the file.
+try:
+    myfile.writeat("ACEGIKMO", 0)
+    myfile.writeat("CIAAAAAMAB",0)
+except RepyParityError:
+    myfile.close()
+    log("!!!Caught an error - Valid data Not Written!!!")
+
+try:
+    assert("CIAAAAAMAB" == myfile.readat(None, 0))
+except:
+    myfile.close()
+    log("Error: Unable to read-----Valid Write Unsuccessful")
+
+
+
+

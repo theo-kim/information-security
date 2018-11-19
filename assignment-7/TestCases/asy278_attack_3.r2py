@@ -1,0 +1,21 @@
+# Check if len(data) < 8 is directly written
+
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+target = openfile("testfile.txt", True)  #Create a parity file
+
+try:
+    target.writeat("BBBBBBBBBBBBB", 0)
+    assert("BBBBBBBBBBBBB" == target.readat(13, 0))
+except:
+    log("Valid data not written!")
+
+try:
+    target.writeat("BBA", 13)
+    if target.readat(16, 0) == "BBBBBBBBBBBBBBBA":
+        log("Invalid data written!")
+except RepyParityError:
+    pass
+
+target.close()

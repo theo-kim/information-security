@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+myfile = openfile("testfile.txt", True)
+
+data = "A" * 8
+
+try:
+    myfile.writeat(data, 0)
+except:
+    log("Test failed!")
+
+if data != myfile.readat(None, 0):
+    log("Test failed!")
+
+myfile.close()

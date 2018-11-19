@@ -1,0 +1,29 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+offset = 1
+
+seq = "AA" 
+try:
+  myfile.writeat(seq,offset)
+except SeekPastEndOfFileError:
+  pass  # should happen
+else:
+  log("should have been an error instead!\n")
+
+
+seq = "BCBC"
+myfile.writeat(seq,0)
+assert(seq == myfile.readat(len(seq),0))
+offset += len(seq)
+seq = "BCBC"
+try:
+  myfile.writeat(seq,-1)
+except RepyArgumentError:
+  pass
+else:
+  log("should have been an error instead\n")
+
+
+myfile.close()

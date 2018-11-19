@@ -1,0 +1,25 @@
+# Invalid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+try:
+  # Write valid data to the file
+  myfile.writeat("AAAAAAA",0)
+  # Write data over existing data in the file
+  myfile.writeat("B",7)
+
+  # Read the file to check the contents
+  assert('AAAAAAAB' == myfile.readat(8,0))
+
+  # Check to see if invalid data is written
+  log("Invalid Data write to a file was successfull!")
+  #Close the file
+  myfile.close()
+except:
+  #Close the file
+  myfile.close()

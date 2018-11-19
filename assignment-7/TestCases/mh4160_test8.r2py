@@ -1,0 +1,21 @@
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+def tester1():
+    myfile.writeat("BBBBBBBB",0)
+
+def tester2():
+    myfile.writeat("CCCC",0)
+
+    
+try:
+    createthread(tester1)
+    createthread(tester2)
+    assert('CCCCBBBB' == myfile.readat(None,0))
+except:
+    log("Multithreading Failed")
+
+   

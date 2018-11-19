@@ -1,0 +1,40 @@
+# test for infinite loops indicating accuracy error in reference monitor
+
+def simpleWrite():
+	if "testfile.txt" in listfiles():
+		removefile("testfile.txt")
+	myfile=openfile("testfile.txt",True)  #Create a parity file
+
+	try:
+		myfile.writeat("ABBBBBBACCCCDDDDA",0) # legal write
+	except:
+		pass
+	
+	try:
+		myfile.writeat("ABBBBBBB",4)
+	except:
+		pass
+	
+	try:
+		myfile.readat(4,4)
+	except:
+		pass
+		
+	
+		
+	mycontext['thread_complete'] = 1 #communicate to parent process that thread is complete
+	myfile.close()
+
+
+#create a writing thread
+mycontext['thread_complete'] = 0
+timeout = getruntime() + 5
+createthread(simpleWrite)
+
+while getruntime() < timeout and mycontext['thread_complete'] == 0:
+	sleep(1)
+
+if mycontext['thread_complete'] == 0:
+	log("Accuracy error. Reference monitor timed-out due to possible infinite loop\n")
+
+exitall()

@@ -1,0 +1,29 @@
+# python repy.py restrictions.default encasementlib.r2py [security_layer].r2py [attack_program].r2py
+
+# TEST CASE 10 : Having Your Offset Larger Than The File
+# Travis Wheelwright - tjw389
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+    
+if "testfile2.txt" in listfiles():
+    removefile("testfile2.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+# write valid data onto the file.
+myfile.writeat("ABBA",0)
+
+try:
+	myfile.readat(4,8)
+	# Close the file:
+	myfile.close()
+	
+	log("ATTACK SUCCESSFUL!\n")
+
+except:
+    myfile.close()
+    # Error Handle or Failure Condition
+    # log("DATA NOT READ!\n")

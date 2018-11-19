@@ -1,0 +1,26 @@
+#zz1424 / N12323212
+#TEST CASE 4
+
+#ACCURACY/EFFICIENCY/SECURITY
+#This test case writes invalid data between 2 8-byte sequences.
+
+def main():
+    #Remove and create testfile
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+    myfile = openfile("testfile.txt", True)
+
+    try:
+        myfile.writeat("ABABABABAAAABBBB", 0) #16 byte sequence
+        assert("ABABABABAAAABBBB" == myfile.readat(16, 0))
+        myfile.writeat("AB", 7) #ABABABAA BAAABBBB
+        assert("ABABABAABAAABBBB" == myfile.readat(16, 0))
+        myfile.close()
+    except:
+        #Odd parity successfully caught.
+        myfile.close()
+    else:
+        log("4: Invalid write to file successful!\n")
+
+if callfunc == "initialize":
+    main()

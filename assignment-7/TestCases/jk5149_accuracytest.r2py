@@ -1,0 +1,15 @@
+#test case given by professor
+
+
+if "accuracytest.txt" in listfiles():
+ removefile("accuracytest.txt")
+
+myfile=openfile("accuracytest.txt",True)  #Create a file
+
+try:
+ myfile.writeat("ABBA",0)
+ assert('ABBA' == myfile.readat(4,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("Valid data not written!")

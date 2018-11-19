@@ -1,0 +1,39 @@
+# Valid Write more than 8 byte on an empty file
+
+# timer incase deadlock or loop forever
+def time_out():
+    log('Running too long, deadlock or loop forever!\n')
+    exitall()
+def time_limit(pause_in_seconds, call_function):
+    def configured_timer_function():
+        sleep(pause_in_seconds)
+        call_function()
+    return configured_timer_function
+
+def run_test():
+
+
+    if "testfile.txt" in listfiles():
+        removefile("testfile.txt")
+
+    myfile = openfile("testfile.txt", True)  # Create a file
+
+    try:
+        # write valid data onto the file.
+        myfile.writeat("ABBAABBAABBAABBAAA", 0)
+        # read from the file to see if the write was successful.
+        assert('ABBAABBAABBAABBAAA' == myfile.readat(None, 0))
+    except (CodeUnsafeError, NameError) as e:
+        log("Code error found. {}\n".format(e.args[-1]))
+    except:
+        # Error Handle or Failure Condition
+        log("Valid data not written!\n")
+    finally:
+        myfile.close()
+    exitall()
+
+        
+if callfunc == "initialize":
+    configured_function = time_limit(5, time_out)
+    createthread(configured_function)
+    run_test()

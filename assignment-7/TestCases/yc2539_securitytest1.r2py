@@ -1,0 +1,38 @@
+# Valid Write Operation on an empty file
+# Write sequence's length is between 1 to 7, so every sequence should be written in file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+#unichar code, take char from 65-90
+charDict = []
+for ch in range(65, 91):
+    charDict.append(chr(ch))
+
+
+writesequence = ""
+count = 0
+
+for i in range(1, 8):
+	for j in range(1, i + 1):
+		writesequence += charDict[count]
+		count = count + 1
+	try:
+	 	# write valid data onto the file.
+		myfile.writeat(writesequence, 0)
+		# read from the file to see if the write was successful.
+		assert(writesequence == myfile.readat(i, 0))
+	except:
+	 	# Error Handle or Failure Condition
+	 	log("Valid data not written!\n")
+
+	#Reset
+	writesequence = ""
+	count = i
+
+myfile.close()
+

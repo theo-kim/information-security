@@ -1,0 +1,22 @@
+# Test if offset is < 0 or offset is > length of file
+
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile = openfile("testfile.txt",True)  #Create a file
+
+myfile.writeat("AAAAAAAABBBBBBBB", 0)
+
+try:
+	myfile.writeat("AAAAAAAA", -1) 
+except:
+	log("Security layer doesn't handle the situation when offset is < 0.\n")
+
+try:
+	myfile.writeat("AAAAAAAA", 1000) 
+except:
+	log("Security layer doesn't handle the situation when offset is > length of file.\n")
+myfile.close()

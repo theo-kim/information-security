@@ -1,0 +1,20 @@
+if "testfile1.txt" in listfiles():
+	removefile("testfile1.txt")
+if "testfile2.txt" in listfiles():
+	removefile("testfile2.txt")
+
+#Write to multiple files
+first_file=openfile("testfile1".txt", True)
+second_file=openfile("testfile2.txt", True)
+
+try:
+	first_file.writeat("AA",0)
+	second_file.writeat("BB",0)
+except Exception:
+	log("Writes to multiple files doesn't work\n")
+finally:
+	first_file.close()
+	second_file.close()
+
+
+	

@@ -1,0 +1,18 @@
+# Write invalid complete sequence to empty file
+# Should be rejected
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  # Odd 8-byte sequence should be rejected
+  myfile.writeat("AAAAAAAB",0)
+except RepyParityError:
+  pass
+else:
+  log("Invalid write should have raised RepyParityError!\n")
+
+myfile.close()

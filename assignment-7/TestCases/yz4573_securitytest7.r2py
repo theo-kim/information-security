@@ -1,0 +1,28 @@
+######################################################################################################
+# Test case 7:  check INvalid data write and read on a non-empty file, should NOT allow
+#               involve multible bytes changing
+######################################################################################################
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+    removefile("testfile.txt")
+
+#Create a parity test file
+myfile=openfile("testfile.txt",True)
+
+try:
+    # Write valid data to the file
+    myfile.writeat("AAAAAAAABBBBBBBBCCCCCCCC",0)
+except:
+    log("Test 7 failed! Valid data not written on empty file!\n")
+
+try:
+    # Write INvalid data to the file
+    myfile.writeat("BBBCCCCCCCCAA",5)
+    assert('AAAAABBBCCCCCCCCAACCCCCC' == myfile.readat(24,0))
+except:
+    # successful raise a exception
+    myfile.close()
+else:
+    myfile.close()
+    log("Test 7 failed! Multiple bytes of INvalid data write on non-empty file!\n")

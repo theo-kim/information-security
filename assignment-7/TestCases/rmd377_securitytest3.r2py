@@ -1,0 +1,21 @@
+#test if write function can correctly handle writes larger than 8
+
+if "testfile.txt" in listfiles():
+	removefile("testfile.txt")
+	
+myfile=openfile("testfile.txt",True)  #Create a parity file
+
+try:
+	myfile.writeat("DDAADDAACCEECCEEBA",0)
+except:
+	log("Accuracy error. writeat('DDAADDAACCEECCEEBA',0) on empty file not allowed\n")
+
+
+try:
+	assert("DDAADDAACCEECCEEBA" == myfile.readat(None,0))
+	myfile.close()
+except AssertionError:
+	log("Accuracy error. Valid write not allowed\n")
+	myfile.close()
+
+

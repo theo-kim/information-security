@@ -1,0 +1,16 @@
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+myfile=openfile("testfile.txt",True)
+
+try:
+  myfile.writeat("AAAAAAAA",0)
+  myfile.writeat("CCCBB",4)
+  assert('AAAA' == myfile.readat(4,4))
+except RepyParityError:
+  pass
+else:
+  log("should have been an error instead! \n")
+  
+#Close the file
+myfile.close()

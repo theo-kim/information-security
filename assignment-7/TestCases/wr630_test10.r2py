@@ -1,0 +1,15 @@
+# Valid WRITE on a non-empty file
+
+# New File Operation, Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+
+# Write valid data to the file
+try:
+    myfile.writeat("AABBBBBB",1)
+except:
+    myfile.close()
+    log("error writing file)

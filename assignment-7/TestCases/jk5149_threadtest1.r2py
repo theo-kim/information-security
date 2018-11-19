@@ -1,0 +1,18 @@
+#execute the same command(which should override the previous one) 5 times and see if there is an error 
+
+if "threadtest1.txt" in listfiles():
+ removefile("threadtest1.txt")
+
+myfile=openfile("threadtest1.txt",True)  #Create a file
+
+try:
+ createthread(myfile.writeat("ABBA",0))
+ createthread(myfile.writeat("ABBA",0))
+ createthread(myfile.writeat("ABBA",0))
+ createthread(myfile.writeat("ABBA",0))
+ createthread(myfile.writeat("ABBA",0))
+ assert('ABBA' == myfile.readat(4,0))
+ myfile.close()
+except:
+ myfile.close()
+ log("Valid data not written when using threads")

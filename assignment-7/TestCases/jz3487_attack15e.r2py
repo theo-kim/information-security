@@ -1,0 +1,35 @@
+# Valid Write Operation on an empty file
+
+# Clean up of existing file
+if "testfile.txt" in listfiles():
+  removefile("testfile.txt")
+
+(data,offset)=("AABBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",0)
+# Open File Function Call
+myfile=openfile("testfile.txt",True)  #Create a file
+try:
+  # write valid data onto the file.
+  myfile.writeat(data,offset)
+  # read from the file to see if the write was successful.
+except:
+  # Error Handle or Failure Condition
+  log("writeat() function not working in right way. \n")
+(data,offset)=("AAAAAABAAAAA",32)
+# Open File Function Call
+try:
+  try:
+  # write valid data onto the file.
+    myfile.writeat(data,offset)
+  # read from the file to see if the write was successful.
+  except RepyParityError:
+  # Error Handle or Failure Condition
+    pass
+except:
+  log("writeat() function not working in right way. \n")
+
+try:
+  assert('AABBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' == myfile.readat(None,0))
+except:
+  log("Valid data not written.\n")
+myfile.close()
+
